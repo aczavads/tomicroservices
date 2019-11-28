@@ -1,8 +1,12 @@
 package sizeOfPackage;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
@@ -19,9 +23,51 @@ public class SizeOf {
 	
 	public static File sizeOfLog;
 	
+	public static File featureInfo;
+	
+	private static String featureInfoContent = "";
+	
+	/**
+	 * SF:Auth#Delete-Auth#Admin-Auth
+Class:Admin#Method:delete#SizeOf:100
+FF:Auth#Delete-Auth#Admin-Auth
+	 */
+	public static void addFeatureInLog() {
+		try (BufferedReader reader = new BufferedReader(new FileReader(featureInfo))) {
+			String line = reader.readLine();
+			String currentContent = "";
+			boolean start = true;
+			while (line != null) {
+				if (!featureInfoContent.contains(line))  {
+					return;
+				}
+				if (!start) {
+					currentContent += "#";
+				} else {
+					start = false;
+				}
+				currentContent += line;
+			}
+			if (!featureInfoContent.equals(currentContent)) {
+				String toLog = "SF:" + featureInfoContent + "\n";
+				toLog += "FF:" + currentContent + "\n";
+				featureInfoContent = currentContent;
+				try(BufferedWriter writer = new BufferedWriter(new FileWriter(sizeOfLog, true));
+						PrintWriter out = new PrintWriter(writer)) {
+					out.println(toLog);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+	}
+	
 	public static void saveSizeOfLog(String fromClassName, String fromMethodName, long sizeOf) {
 		String log = "Class:" + fromClassName + "#" + "Method:" + fromMethodName + 
 				"#" + "SizeOf:" + sizeOf;
+		addFeatureInLog();
 		try(BufferedWriter writer = new BufferedWriter(new FileWriter(sizeOfLog, true));
 				PrintWriter out = new PrintWriter(writer)) {
 			out.println(log);
