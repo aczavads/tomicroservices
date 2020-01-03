@@ -6,10 +6,10 @@ import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 import org.jgrapht.Graph;
 
+import br.pucrio.inf.les.opus.tomicroservices.analysis.dynamic.DynamicLogAnalyzer;
 import br.pucrio.inf.les.opus.tomicroservices.metrics.overhead.MethodEdgeValue;
 import br.pucrio.inf.les.opus.tomicroservices.metrics.overhead.MethodGraph;
 import br.pucrio.inf.les.opus.tomicroservices.metrics.overhead.MethodNode;
-import br.pucrio.inf.les.opus.tomicroservices.metrics.overhead.SizeOfAnalyzer;
 
 public class PrintGraph {
 	
@@ -32,7 +32,7 @@ public class PrintGraph {
 	}
 	
 	public void print(File sizeOflog, File output, int numberOfMicroservices) {
-		SizeOfAnalyzer analyzer = new SizeOfAnalyzer();
+		DynamicLogAnalyzer analyzer = new DynamicLogAnalyzer();
 		MethodGraph methodGraph = new MethodGraph();
 		analyzer.analyzeSizeOf(sizeOflog, methodGraph);
 		printDOT("Method Graph:", methodGraph.getGraph(), output);

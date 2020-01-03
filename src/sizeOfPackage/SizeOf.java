@@ -11,6 +11,8 @@ import java.io.PrintWriter;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.openjdk.jol.info.ClassLayout;
 
@@ -27,30 +29,24 @@ public class SizeOf {
 	
 	private static String featureInfoContent = "";
 	
-	/**
-	 * SF:Auth#Delete-Auth#Admin-Auth
-Class:Admin#Method:delete#SizeOf:100
-FF:Auth#Delete-Auth#Admin-Auth
-	 */
+	public static long deep = 0l;
+
 	public static void addFeatureInLog() {
 		try (BufferedReader reader = new BufferedReader(new FileReader(featureInfo))) {
-			String line = reader.readLine();
 			String currentContent = "";
 			boolean start = true;
+			String line = reader.readLine();
 			while (line != null) {
-				if (!featureInfoContent.contains(line))  {
-					return;
-				}
 				if (!start) {
 					currentContent += "#";
 				} else {
 					start = false;
 				}
 				currentContent += line;
+				line = reader.readLine();
 			}
 			if (!featureInfoContent.equals(currentContent)) {
-				String toLog = "SF:" + featureInfoContent + "\n";
-				toLog += "FF:" + currentContent + "\n";
+				String toLog = "SF:" + currentContent;
 				featureInfoContent = currentContent;
 				try(BufferedWriter writer = new BufferedWriter(new FileWriter(sizeOfLog, true));
 						PrintWriter out = new PrintWriter(writer)) {
@@ -64,9 +60,14 @@ FF:Auth#Delete-Auth#Admin-Auth
 		}
 	}
 	
+	public static void decreaseDeep() {
+		deep = deep - 1l;
+	}
+	
 	public static void saveSizeOfLog(String fromClassName, String fromMethodName, long sizeOf) {
+		++deep;
 		String log = "Class:" + fromClassName + "#" + "Method:" + fromMethodName + 
-				"#" + "SizeOf:" + sizeOf;
+				"#" + "SizeOf:" + sizeOf + '#' + "Deep:" + deep;
 		addFeatureInLog();
 		try(BufferedWriter writer = new BufferedWriter(new FileWriter(sizeOfLog, true));
 				PrintWriter out = new PrintWriter(writer)) {
@@ -92,7 +93,7 @@ FF:Auth#Delete-Auth#Admin-Auth
 	 * @throws IllegalAccessException 
 	 * @throws IllegalArgumentException 
 	 */
-	public static long sizeOfArray(Object o) throws IllegalArgumentException, IllegalAccessException {
+	public static long sizeOfArray(Object o, int deepRecursion) throws IllegalArgumentException, IllegalAccessException {
 		Class<?> _class = o.getClass();
 		Class<?> componentType = _class.getComponentType();
 		
@@ -115,7 +116,17 @@ FF:Auth#Delete-Auth#Admin-Auth
 		if (isPrimitive(firstElement)) {
 			elementSize = ClassLayout.parseInstance(firstElement).instanceSize();
 		} else {
-			elementSize = sizeOf(firstElement);
+			if (firstElement == null) {
+				elementSize = 0;
+			} else {
+				elementSize = sizeOf(firstElement, deepRecursion);
+			}
+			/**
+			 * 				System.out.println(o.toString());
+				System.out.println(o.getClass());
+				System.out.println("NULL");
+				System.out.println(length);
+			 */
 		}
 		return size * elementSize;
 	}
@@ -171,13 +182,59 @@ FF:Auth#Delete-Auth#Admin-Auth
 	 * @throws IllegalArgumentException
 	 * @throws IllegalAccessException
 	 */
-	public static long sizeOf(Object o) throws IllegalArgumentException, IllegalAccessException {
+	public static long sizeOf(Object o) {
+		try {
+			return sizeOf(o, 1);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
+	public static Map<Integer, Boolean> mObjects = new HashMap<Integer, Boolean>();
+	
+	
+	public static boolean isIgnoredClass(String name) {
+		if (name.startsWith("org.glassfish")) {
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Calculate an object size
+	 * @param o object
+	 * @return size in bytes
+	 * @throws IllegalArgumentException
+	 * @throws IllegalAccessException
+	 */
+	public static long sizeOf(Object o, int deepRecursion) throws IllegalArgumentException, IllegalAccessException {
+		if (isIgnoredClass(o.getClass().getName())) {
+			return 0;
+		}
+		int hashCode = System.identityHashCode(o);
+		System.out.println(o.getClass().getName());
+		System.out.println(hashCode);
+		if (deepRecursion == 1) {
+			mObjects.clear();
+		}
+		if (mObjects.containsKey(new Integer(hashCode))) {
+			return 0;
+		} else {
+			mObjects.put(new Integer(hashCode), true);
+		}
+		/** if (deepRecursion >= 10) {
+			return 0;
+		}
+		**/
+		System.out.println("DEEP>>>>>>>>>>>>>>>>>>>>>>>>>>  "+ deepRecursion);
 		long sum = 0;
 		Class<?> _class = o.getClass();
 		if (isPrimitive(o)) {
 			sum = sizeOfPrimtive(o);
 		} else if (_class.isArray()) {
-			sum = sizeOfArray(o);
+			sum = sizeOfArray(o, deepRecursion);
 		} else {
 			Field[] fields = _class.getDeclaredFields();
 			Method[] methods = _class.getMethods();
@@ -191,7 +248,7 @@ FF:Auth#Delete-Auth#Admin-Auth
 					if (field.getType().isPrimitive()) {
 						sum += ClassLayout.parseInstance(value).instanceSize();
 					} else {
-						sum += sizeOf(value);
+						sum += sizeOf(value, deepRecursion + 1);
 					}
 				}
 			}
@@ -199,4 +256,36 @@ FF:Auth#Delete-Auth#Admin-Auth
 		return sum;
 	}
 	
+	public static long sizeOf(int pt) {
+		return sizeOfPrimtive(new Integer(pt));
+	}
+	
+	public static long sizeOf(long pt) {
+		return sizeOfPrimtive(new Long(pt));
+	}
+	
+	public static long sizeOf(float pt) {
+		return sizeOfPrimtive(new Float(pt));
+	}
+	
+	public static long sizeOf(double pt) {
+		return sizeOfPrimtive(new Double(pt));
+	}
+	
+	public static long sizeOf(char pt) {
+		return sizeOfPrimtive(new Character(pt));
+	}
+	
+	public static long sizeOf(byte pt) {
+		return sizeOfPrimtive(new Byte(pt));
+	}
+	
+	public static long sizeOf(short pt) {
+		return sizeOfPrimtive(new Short(pt));
+	}
+	
+	public static long sizeOf(boolean pt) {
+		return sizeOfPrimtive(new Boolean(pt));
+	}
+
 }

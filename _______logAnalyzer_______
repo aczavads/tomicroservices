@@ -1,0 +1,3 @@
+SF:A#B#C#D
+Class:ibase.rest.api.authentication.v1.AuthenticationApi#Method:authenticationPost#SizeOf:304#Deep:1
+Class:ibase.common.ServiceUtil#Method:getLocale#SizeOf:0#Deep:2

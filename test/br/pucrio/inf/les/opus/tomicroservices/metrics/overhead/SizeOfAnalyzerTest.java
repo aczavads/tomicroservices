@@ -10,12 +10,14 @@ import org.apache.commons.io.FileUtils;
 import org.jgrapht.Graph;
 import org.junit.jupiter.api.Test;
 
+import br.pucrio.inf.les.opus.tomicroservices.analysis.dynamic.DynamicLogAnalyzer;
+
 public class SizeOfAnalyzerTest {
 
 	@Test
 	public void testAnalyzeSizeOfTwoLineInTheLog() throws IOException {
 		File logFile = new File("___logFIleTest");
-		SizeOfAnalyzer analyzer = new SizeOfAnalyzer();
+		DynamicLogAnalyzer analyzer = new DynamicLogAnalyzer();
 		FileUtils.writeStringToFile(logFile, "Class:A#Method:a#SizeOf:100\n"
 				+ "Class:B#Method:b#SizeOf:200", "UTF-8");
 		MethodGraph methodGraph = new MethodGraph();

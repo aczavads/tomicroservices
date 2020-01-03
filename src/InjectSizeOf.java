@@ -23,8 +23,10 @@ public class InjectSizeOf {
 			final boolean acceptArg = args[0].equals("a");
 			final File fileWithPatternArg = new File(args[1]);
 			final File logFile = new File(args[2]);
+			final File featureFile = new File(args[3]);
 			ClassNamePattern pattern = new ClassNamePattern(fileWithPatternArg, acceptArg);
-			inst.addTransformer(new SizeOfTransformer(pattern, logFile));
+			Class.forName("java.lang.invoke.CallSite");
+			inst.addTransformer(new SizeOfTransformer(pattern, logFile, featureFile));
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			e.printStackTrace();

@@ -15,6 +15,7 @@ import javassist.Modifier;
 import javassist.NotFoundException;
 import javassist.bytecode.LocalVariableAttribute;
 import javassist.bytecode.MethodInfo;
+import javassist.bytecode.MethodParametersAttribute;
 
 /**
  * 
@@ -34,10 +35,11 @@ public class SizeOfTransformer implements ClassFileTransformer {
 	
 	private ClassNamePattern pattern;
 	
-	public SizeOfTransformer(ClassNamePattern pattern, File logFile) {
+	public SizeOfTransformer(ClassNamePattern pattern, File logFile, File featureFile) {
 		super();
 		this.pattern = pattern;
 		sizeOfPackage.SizeOf.sizeOfLog = logFile;		
+		sizeOfPackage.SizeOf.featureInfo = featureFile;
 	}
 	
 	public byte[] transform(ClassLoader loader, String className, Class redefiningClass, ProtectionDomain domain,
@@ -47,7 +49,7 @@ public class SizeOfTransformer implements ClassFileTransformer {
 		try {
 			cl = pool.makeClass(new java.io.ByteArrayInputStream(bytes));
 			String clName = cl.getName();
-			if (pattern.isAcceptable(clName)) {
+			if (pattern.isAcceptable(clName) && !cl.isInterface()) {
 				System.out.println("Inject in " + clName.toString());
 				CtBehavior[] methods = cl.getDeclaredBehaviors(); //TODO - verficar declared ou apenas methods
 				addSizeOfMethods(cl);
@@ -58,7 +60,7 @@ public class SizeOfTransformer implements ClassFileTransformer {
 			    }
 			}
 		    bytes = cl.toBytecode();
-		}catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			if (cl != null) {
@@ -68,6 +70,12 @@ public class SizeOfTransformer implements ClassFileTransformer {
 		return bytes;
 	}
 
+	private void addSizeOfMethod(String method, CtClass cl) throws CannotCompileException {
+		CtMethod m;
+		m = CtNewMethod.make(method, cl);
+		cl.addMethod(m);
+	}
+	
 	/**
 	 * Add method in original class to call sizeOf
 	 * @param ctClass cl class to be transformed
@@ -76,9 +84,24 @@ public class SizeOfTransformer implements ClassFileTransformer {
 		CtMethod m;
 		try {
 			String str = "";
-			m = CtNewMethod.make("public static long ____sizeOf(Object o) {return sizeOfPackage.SizeOf.sizeOf(o);}", 
+			addSizeOfMethod("public static long ____sizeOf(Object o) {return sizeOfPackage.SizeOf.sizeOf(o);}", 
+					cl);			
+			addSizeOfMethod("public static long ____sizeOf(int pt) {return sizeOfPackage.SizeOf.sizeOf(pt);}",
 					cl);
-			cl.addMethod(m);
+			addSizeOfMethod("public static long ____sizeOf(char pt) {return sizeOfPackage.SizeOf.sizeOf(pt);}",
+					cl);
+			addSizeOfMethod("public static long ____sizeOf(byte pt) {return sizeOfPackage.SizeOf.sizeOf(pt);}",
+					cl);
+			addSizeOfMethod("public static long ____sizeOf(short pt) {return sizeOfPackage.SizeOf.sizeOf(pt);}",
+					cl);
+			addSizeOfMethod("public static long ____sizeOf(long pt) {return sizeOfPackage.SizeOf.sizeOf(pt);}",
+					cl);
+			addSizeOfMethod("public static long ____sizeOf(float pt) {return sizeOfPackage.SizeOf.sizeOf(pt);}",
+					cl);
+			addSizeOfMethod("public static long ____sizeOf(double pt) {return sizeOfPackage.SizeOf.sizeOf(pt);}",
+					cl);
+			addSizeOfMethod("public static long ____sizeOf(boolean pt) {return sizeOfPackage.SizeOf.sizeOf(pt);}",
+					cl);
 		} catch (CannotCompileException e) {
 			System.err.println("Can not compile sizeOf method - maybe you forgot to add sizeOf in classpath");
 			e.printStackTrace();
@@ -95,6 +118,8 @@ public class SizeOfTransformer implements ClassFileTransformer {
 			List<String> methodParameters = methodParameterName(method);
 			if (methodParameters.isEmpty()) { return; }
 			try {
+				String decreaseDeep = "sizeOfPackage.SizeOf.decreaseDeep();";
+				method.insertAfter(decreaseDeep, false);
 				//String sizeOfCall = "System.out.println(";
 				final String quote = "\"";
 				String sizeOfCall = "sizeOfPackage.SizeOf.saveSizeOfLog(";
@@ -108,10 +133,27 @@ public class SizeOfTransformer implements ClassFileTransformer {
 						sizeOfCall += " + ";
 					}
 					sizeOfCall += "____sizeOf(" + parameterName + ")";
+					String printParameterName = "System.out.println(" + parameterName + ");";
+					method.insertBefore(printParameterName);
+					String sizePerParameter = "System.out.println("+ "____sizeOf(" + parameterName + ")" + ");";
+					System.out.println(sizePerParameter);
+					method.insertBefore(sizePerParameter);
 				}
 				sizeOfCall += ");";
 				System.out.println(sizeOfCall);
 				method.insertBefore(sizeOfCall);
+				/**
+				try {
+					String decreaseDeep = "sizeOfPackage.SizeOf.decreaseDeep();";
+					method.insertAfter(decreaseDeep, true);
+				} catch (Exception e) {
+					System.err.println(e.getMessage());
+				}
+				**/
+				//if (!className.endsWith(method.getName()) || method.getModifiers() != Modifier.STATIC) {
+					//String decreaseDeep = "sizeOfPackage.SizeOf.decreaseDeep();";
+					//method.insertAfter(decreaseDeep, true);
+				//} 
 			} catch (CannotCompileException e) {
 				System.err.println("Can not insert ____sizeOf");
 				e.printStackTrace();
@@ -130,19 +172,38 @@ public class SizeOfTransformer implements ClassFileTransformer {
 		MethodInfo methodInfo = method.getMethodInfo();
     	LocalVariableAttribute table = (LocalVariableAttribute) methodInfo.getCodeAttribute().
     			getAttribute(javassist.bytecode.LocalVariableAttribute.tag);
-    	int parametersSize;
+		//MethodParametersAttribute table = (MethodParametersAttribute) methodInfo.getCodeAttribute().
+		//   		getAttribute(javassist.bytecode.MethodParametersAttribute.tag);
+		int parametersSize;
 		try {
 			parametersSize = method.getParameterTypes().length;
+			System.out.println("Parameter size: " + parametersSize);
 			String parameterName = null;
 	    	int frame;
+	    	boolean containThisParam = false;
 	    	for (int i = 0; i < parametersSize; ++i) {
 	        	frame = table.nameIndex(i); 
-	        	parameterName = methodInfo.getConstPool().getUtf8Info(frame);
+	        	//frame = table.name(i);
+	    		parameterName = methodInfo.getConstPool().getUtf8Info(frame);
+	    		System.out.println("Parameter name:" + parameterName);
 	        	if (parameterName.equals("this")) {
+	        		containThisParam = true;
 	        		++parametersSize; //It don't count 'this' like parameter
 	        	} else {
-	        		result.add(parameterName);
+	        		if (containThisParam) {
+		        		result.add("$" + (i));
+	        		} else {
+		        		result.add("$" + (i + 1));
+	        		}
+	        		//result.add(parameterName);
 	        	}
+	        	/**
+	        	 * 	    		if (i == 0 && parameterName.equals("this")) {
+	    			continue;
+	    		} else {
+	        		result.add("$" + i);
+	    		}
+	        	 */
 	    	}
 		} catch (NotFoundException e) {
 			e.printStackTrace();

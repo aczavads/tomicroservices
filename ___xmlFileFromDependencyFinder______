@@ -1,0 +1,6 @@
+<feature confirmed="yes">
+                <name>Main.Main()</name>
+                <outbound type="feature" confirmed="no">java.lang.Object.Object()</outbound>
+                <outbound type="feature" confirmed="no">java.lang.Object.Object2()</outbound>
+                <inbound type="feature" confirmed="no">java.lang.Object.Object3()</outbound>
+            </feature>            <otherline>
