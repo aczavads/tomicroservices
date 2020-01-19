@@ -8,9 +8,9 @@ import org.jgrapht.Graph;
 import org.jgrapht.alg.interfaces.SpanningTreeAlgorithm;
 import org.jgrapht.alg.spanning.KruskalMinimumSpanningTree;
 
-import br.pucrio.inf.les.opus.tomicroservices.metrics.overhead.MethodEdgeValue;
-import br.pucrio.inf.les.opus.tomicroservices.metrics.overhead.MethodGraph;
-import br.pucrio.inf.les.opus.tomicroservices.metrics.overhead.MethodNode;
+import br.pucrio.inf.les.opus.tomicroservices.metrics.MethodEdgeValue;
+import br.pucrio.inf.les.opus.tomicroservices.metrics.MethodGraph;
+import br.pucrio.inf.les.opus.tomicroservices.metrics.MethodNode;
 
 public class AlgorithmMST {
 

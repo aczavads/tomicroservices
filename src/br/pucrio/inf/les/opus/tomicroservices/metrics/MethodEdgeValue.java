@@ -1,4 +1,4 @@
-package br.pucrio.inf.les.opus.tomicroservices.metrics.overhead;
+package br.pucrio.inf.les.opus.tomicroservices.metrics;
 
 import org.jgrapht.graph.DefaultEdge;
 

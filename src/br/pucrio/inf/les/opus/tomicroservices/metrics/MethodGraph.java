@@ -1,4 +1,4 @@
-package br.pucrio.inf.les.opus.tomicroservices.metrics.overhead;
+package br.pucrio.inf.les.opus.tomicroservices.metrics;
 
 import java.util.ArrayList;
 import java.util.HashMap;

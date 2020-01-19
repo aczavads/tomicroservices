@@ -4,8 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-import br.pucrio.inf.les.opus.tomicroservices.metrics.overhead.MethodEdgeValue;
-import br.pucrio.inf.les.opus.tomicroservices.metrics.overhead.MethodGraph;
+import br.pucrio.inf.les.opus.tomicroservices.metrics.MethodEdgeValue;
+import br.pucrio.inf.les.opus.tomicroservices.metrics.MethodGraph;
 
 public class GenerateDOTTest {
 	

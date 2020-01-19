@@ -10,7 +10,7 @@ public class Edge {
 	private long dynamicCall;
 	
 	private List<Long> dataTraffic;
-
+	
 	private Vertex source;
 	
 	private Vertex target;

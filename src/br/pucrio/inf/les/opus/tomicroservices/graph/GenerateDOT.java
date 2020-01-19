@@ -8,8 +8,8 @@ import org.jgrapht.Graph;
 import org.jgrapht.io.ComponentNameProvider;
 import org.jgrapht.io.DOTExporter;
 
-import br.pucrio.inf.les.opus.tomicroservices.metrics.overhead.MethodEdgeValue;
-import br.pucrio.inf.les.opus.tomicroservices.metrics.overhead.MethodNode;
+import br.pucrio.inf.les.opus.tomicroservices.metrics.MethodEdgeValue;
+import br.pucrio.inf.les.opus.tomicroservices.metrics.MethodNode;
 
 public class GenerateDOT {
 	

@@ -1,5 +1,7 @@
 package br.pucrio.inf.les.opus.tomicroservices.graph;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,21 +15,30 @@ public class Graph {
 		this.vertices = new HashMap();
 	}
 	
+	public List<Vertex> getVerticies() {
+		Collection<Vertex> collection = this.vertices.values();
+		return new ArrayList<Vertex>(collection);
+	}
+	
 	/**
-	 * Insert vertex in the graph
+	 * Insert or update a vertex in the graph. 
 	 * @param vertex vertex
-	 * @return true if does not exists this label, otherwise false
+	 * @return vertex new or updated vertex.
 	 */
-	public boolean insert(Vertex vertex) {
+	public Vertex insert(Vertex vertex) {
 		if (!containsVertex(vertex)) {
 			this.vertices.put(vertex.getName(), vertex);
-			return true;
+			return vertex;
 		} else {
 			Vertex currentVertex = this.vertices.get(vertex.getName());
 			assert(currentVertex.getName().equals(vertex.getName()));
 			currentVertex.addOrUpdateNewData(vertex);
+			return currentVertex;
 		}
-		return false;
+	}
+	
+	public Vertex getVertex(String name) {
+		return this.vertices.get(name);
 	}
 	
 	/**

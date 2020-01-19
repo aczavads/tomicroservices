@@ -2,6 +2,7 @@ package br.pucrio.inf.les.opus.tomicroservices.graph;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -9,7 +10,7 @@ import java.util.Set;
 public class Vertex {
 	
 	private String name;
-	private List<String> funcitionalities;
+	private Set<String> funcitionalities;
 	private Map<String, Edge> outbound;
 	private Map<String, Edge> intbound;
 
@@ -17,20 +18,20 @@ public class Vertex {
 		this.name = name;
 		this.outbound = new HashMap<String, Edge>();
 		this.intbound = new HashMap<String, Edge>();
+		this.funcitionalities = new HashSet<String>();
 	}
 	
 	public Vertex(String name) {
 		startCommonFields(name);
-		this.funcitionalities = new ArrayList<String>();
 	}
 	
 	public Vertex(String name, List<String> functionalities) {
 		startCommonFields(name);
-		this.funcitionalities = functionalities;
+		this.funcitionalities.addAll(functionalities);
 	}
 	
 	public void addOutbound(Edge edge) {
-		AddOrUpdateEdge(this.outbound, edge);
+		addOrUpdateEdge(this.outbound, edge);
 	}
 	
 	/**
@@ -38,8 +39,13 @@ public class Vertex {
 	 * @param bound bound
 	 * @param edge edge with new informations
 	 */
-	private void AddOrUpdateEdge(Map<String, Edge> bound, Edge edge) {
-		Vertex newVertex = edge.getTarget();
+	private void addOrUpdateEdge(Map<String, Edge> bound, Edge edge) {
+		Vertex newVertex;
+		if (bound == this.intbound) {
+			newVertex = edge.getSource();
+		} else {
+			newVertex = edge.getTarget();
+		}
 		String label = newVertex.getName();
 		Edge currentEdge = bound.get(label);
 		if (currentEdge != null) {
@@ -50,7 +56,7 @@ public class Vertex {
 	}
 	
 	public void addInBound(Edge edge) {
-		AddOrUpdateEdge(this.intbound, edge);
+		addOrUpdateEdge(this.intbound, edge);
 	}
 	
 	public Map<String, Edge> getOutbound() {
@@ -66,11 +72,17 @@ public class Vertex {
 	}
 
 	public List<String> getFuncitionalities() {
-		return funcitionalities;
+		List<String> result = new ArrayList<String>();
+		result.addAll(this.funcitionalities);
+		return result;
 	}
 
 	public void addFuncitionalities(List<String> funcitionalities) {
 		this.funcitionalities.addAll(funcitionalities);
+	}
+	
+	public void addFuncitionalities(String functionality) {
+		this.funcitionalities.add(functionality);
 	}
 
 	private void addBound(Map<String, Edge> bound, boolean inbound) {
@@ -91,7 +103,7 @@ public class Vertex {
 		addBound(vertex.getInbound(), true);
 	}
 
-	private Map<String, Edge> getInbound() {
+	public Map<String, Edge> getInbound() {
 		return this.intbound;
 	}
 	
