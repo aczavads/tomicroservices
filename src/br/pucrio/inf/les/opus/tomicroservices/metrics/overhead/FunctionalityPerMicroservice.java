@@ -95,8 +95,12 @@ public class FunctionalityPerMicroservice implements MetricPerMicroservice {
 	@Override
 	public double getValue(List<Vertex> removedVerticies, List<Vertex> addedVerticies,
 			List<Vertex> oldVerticiesInMicroservices, double oldMetricValue) {
-		updateFunctionalities(removedVerticies, false);
-		updateFunctionalities(addedVerticies, true);
+		if (removedVerticies != null) {
+			updateFunctionalities(removedVerticies, false);
+		}
+		if (addedVerticies != null) {
+			updateFunctionalities(addedVerticies, true);
+		}
 		updatePredominantFunctionality();
 		return ((double)this.predominantFunctionality / (double)this.totalFrequencyFunctionalities);
 	}

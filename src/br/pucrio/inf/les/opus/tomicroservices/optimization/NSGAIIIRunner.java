@@ -42,9 +42,10 @@ public class NSGAIIIRunner extends AbstractAlgorithmRunner {
 	    AlgorithmRunner algorithmRunner = new AlgorithmRunner.Executor(algorithm).execute();
 	    List<MicroservicesSolution> population = algorithm.getResult();
 	    int solutionCount = 1;
+	    System.out.println("Print Solution");
 	    for (MicroservicesSolution solution : population) {
+	    	System.out.println("Solution " + solutionCount++);
 	    	for (MetricPerMicroserviceArchitecture metric : metrics) {
-	    		System.out.println("Solution " + solutionCount++);
 	    		int index = metric.getObjectiveIndex();
 	    		System.out.println(metric.getName() + " : " + 
 	    				metric.printableValue(solution.getObjective(index)));

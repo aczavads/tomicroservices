@@ -1,9 +1,12 @@
 import java.io.File;
 import java.lang.instrument.ClassFileTransformer;
 import java.lang.instrument.IllegalClassFormatException;
+import java.lang.reflect.Method;
 import java.security.ProtectionDomain;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javassist.CannotCompileException;
 import javassist.ClassPool;
@@ -11,6 +14,7 @@ import javassist.CtBehavior;
 import javassist.CtClass;
 import javassist.CtMethod;
 import javassist.CtNewMethod;
+import javassist.LoaderClassPath;
 import javassist.Modifier;
 import javassist.NotFoundException;
 import javassist.bytecode.LocalVariableAttribute;
@@ -42,19 +46,103 @@ public class SizeOfTransformer implements ClassFileTransformer {
 		sizeOfPackage.SizeOf.featureInfo = featureFile;
 	}
 	
+	/**
+	 * Get all methods. Including private, protected and public.
+	 */
+	private CtBehavior[] getMethods(ClassPool pool, CtClass cl) {
+		String oldName = cl.getName();
+		String newName = "com.xx.yy" + "." + oldName;
+		cl.replaceClassName(oldName, newName);
+		try {
+			Class _class = cl.toClass();
+			Method[] methods = _class.getDeclaredMethods();
+			System.out.println(_class.getName());
+			System.out.println(methods.length);
+			CtMethod[] ctMethod = new CtMethod[methods.length];
+			cl.defrost();
+			cl.replaceClassName(newName, oldName);
+			cl.defrost();
+			int i = 0;
+			System.out.println(methods.length);
+			Set<String> names = new TreeSet<String>();
+			for (Method m : methods) {
+				String name = m.getName();
+				if (names.contains(name)) {
+					System.out.println("Continue");
+					continue;
+				}
+				System.out.println(name);
+				try {
+					cl.getDeclaredBehaviors();
+					
+					CtMethod[] ctMethods = cl.getDeclaredMethods();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				/**
+				try {
+					System.out.println("Something");
+					CtMethod[] ctMethods = cl.getDeclaredMethods(name);
+					System.out.println("Declared Methods");
+					for (CtMethod cm : ctMethods) {
+						System.out.println(i);
+						ctMethod[i] = cm;
+						ctMethod[i].setModifiers(Modifier.PUBLIC);
+						++i;
+					}
+					names.add(name);
+				} catch (Exception e) {
+					System.out.println("Exception");
+					e.printStackTrace();
+				}
+				**/
+				System.out.println(methods.length);
+			}
+			_class = null;
+			//cl.defrost();
+			//cl.replaceClassName(newName, oldName);
+			//cl.defrost();
+			System.out.println("EXIT");
+			return ctMethod;
+		} catch (CannotCompileException e) {
+			e.printStackTrace();
+			cl.replaceClassName(newName, oldName);
+		}
+		cl.replaceClassName(newName, oldName);
+		return null;
+	}
+	
 	public byte[] transform(ClassLoader loader, String className, Class redefiningClass, ProtectionDomain domain,
 			byte[] bytes) throws IllegalClassFormatException {
-		ClassPool pool = ClassPool.getDefault();
+		//ClassPool pool = ClassPool.getDefault();
+		ClassPool pool = new ClassPool();
+		pool.appendClassPath(new LoaderClassPath(loader));
+		pool.appendClassPath(new LoaderClassPath(Thread.currentThread().getContextClassLoader()));
+		try {
+			pool.appendClassPath("/home/luizmatheus/tecgraf/someJars/*");
+		} catch (NotFoundException e1) {
+			System.err.println("Can not include external jars.");
+			e1.printStackTrace();
+		}
 		CtClass cl = null;
+		System.out.println("ClassLoader: " + loader);
+		System.out.println(Thread.currentThread().getContextClassLoader());
+		System.out.println("ClassName: " + className);
 		try {
 			cl = pool.makeClass(new java.io.ByteArrayInputStream(bytes));
+			cl.defrost();
 			String clName = cl.getName();
 			if (pattern.isAcceptable(clName) && !cl.isInterface()) {
 				System.out.println("Inject in " + clName.toString());
-				CtBehavior[] methods = cl.getDeclaredBehaviors(); //TODO - verficar declared ou apenas methods
-				addSizeOfMethods(cl);
+				//CtBehavior[] methods = cl.getDeclaredBehaviors(); //TODO - verficar declared ou apenas methods
+				//CtBehavior[] methods = getMethods(pool, cl);
+				CtBehavior[] methods = cl.getDeclaredMethods(); //TODO - verficar declared ou apenas methods
+				addSizeOfMethods(cl);	
 				for (int i = 0; i < methods.length; i++) {
-			        if (methods[i].isEmpty() == false) {
+					//System.out.println(methods[i].getName());
+					if (methods[i] == null) {
+						continue;
+					} else if (methods[i].isEmpty() == false) {
 			        	changeMethod(methods[i], clName);
 			        }
 			    }
@@ -136,11 +224,11 @@ public class SizeOfTransformer implements ClassFileTransformer {
 					String printParameterName = "System.out.println(" + parameterName + ");";
 					method.insertBefore(printParameterName);
 					String sizePerParameter = "System.out.println("+ "____sizeOf(" + parameterName + ")" + ");";
-					System.out.println(sizePerParameter);
+					//System.out.println(sizePerParameter);
 					method.insertBefore(sizePerParameter);
 				}
 				sizeOfCall += ");";
-				System.out.println(sizeOfCall);
+				//System.out.println(sizeOfCall);
 				method.insertBefore(sizeOfCall);
 				/**
 				try {
@@ -177,11 +265,12 @@ public class SizeOfTransformer implements ClassFileTransformer {
 		int parametersSize;
 		try {
 			parametersSize = method.getParameterTypes().length;
-			System.out.println("Parameter size: " + parametersSize);
-			String parameterName = null;
-	    	int frame;
-	    	boolean containThisParam = false;
+			//System.out.println("Parameter size: " + parametersSize);
+			//String parameterName = null;
+	    	//int frame;
+	    	//boolean containThisParam = false;
 	    	for (int i = 0; i < parametersSize; ++i) {
+	    		/**
 	        	frame = table.nameIndex(i); 
 	        	//frame = table.name(i);
 	    		parameterName = methodInfo.getConstPool().getUtf8Info(frame);
@@ -197,6 +286,8 @@ public class SizeOfTransformer implements ClassFileTransformer {
 	        		}
 	        		//result.add(parameterName);
 	        	}
+	        	**/
+        		result.add("$" + (i + 1)); //skip this parameter.
 	        	/**
 	        	 * 	    		if (i == 0 && parameterName.equals("this")) {
 	    			continue;

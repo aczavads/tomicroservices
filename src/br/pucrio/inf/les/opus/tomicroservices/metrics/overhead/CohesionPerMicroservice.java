@@ -19,6 +19,9 @@ public class CohesionPerMicroservice extends RelationPerMicroservice implements 
 	@Override
 	public double getValue(Microservice microservice) {
 		int size = microservice.getVerticies().size();
+		if (size == 1) {
+			return 0;
+		}
 		double result = super.getValue(microservice);
 		result = (2 * result) / (size * (size - 1));
 		return result;
@@ -69,19 +72,23 @@ public class CohesionPerMicroservice extends RelationPerMicroservice implements 
 		double addValue = 0l;
 		double removeValue = 0l;
 		double newValueMetric = 0l;
+		double addedVerticiesSize = 0.0;
+		double removededVerticiesSize = 0.0;
 		if (removedVerticies != null) {
+			removededVerticiesSize = removedVerticies.size();
 			for (Vertex vertex: removedVerticies) {
 				removeValue += metricPerVertex(vertex, addedVerticies, null, 
 						oldVerticiesInMicroservices, removedVerticies);
 			}
 		}
 		if (addedVerticies != null) {
+			addedVerticiesSize = addedVerticies.size();
 			for (Vertex vertex: addedVerticies) {
 				addValue += metricPerVertex(vertex, oldVerticiesInMicroservices, addedVerticies, 
 						removedVerticies, null);
 			}
 		}
-		double size = oldVerticiesInMicroservices.size() + addedVerticies.size() - removedVerticies.size();
+		double size = oldVerticiesInMicroservices.size() + addedVerticiesSize - removededVerticiesSize;
 		newValueMetric = oldMetricValue + calcCohesion(addValue, size) - calcCohesion(removeValue, size);
 		return newValueMetric;
 	}

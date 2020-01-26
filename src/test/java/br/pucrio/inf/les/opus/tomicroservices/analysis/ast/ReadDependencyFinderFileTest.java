@@ -1,25 +1,19 @@
 package br.pucrio.inf.les.opus.tomicroservices.analysis.ast;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
-
 import java.io.File;
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.apache.commons.io.FileUtils;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import br.pucrio.inf.les.opus.tomicroservices.graph.Graph;
-import net.bytebuddy.implementation.bind.annotation.IgnoreForBinding;
 
 class ReadDependencyFinderFileTest {
 
 	File patternFile;
 	ClassNamePattern pattern;
 	
+	/**
 	@BeforeEach
 	public void pattern() {
 		this.patternFile = new File("_______________PATTERNnnsss_________");
@@ -32,7 +26,8 @@ class ReadDependencyFinderFileTest {
 			fail("Can no write patternFile");
 		}
 	}
-	
+
+
 	@Test
 	void testWithOneBounded() {
 		ReadDependencyFinderFile dependencyFinder = new ReadDependencyFinderFile();
@@ -132,16 +127,27 @@ class ReadDependencyFinderFileTest {
 			e.printStackTrace();
 		}
 	}
-
+	**/
+	
 	@Test
 	void test() {
+		this.patternFile = new File("/home/luizmatheus/tecgraf/patterns");
+		this.pattern = new ClassNamePattern(patternFile, true);
+		
 		ReadDependencyFinderFile dependencyFinder = new ReadDependencyFinderFile();
-		File xmlFile = new File("/tmp/algo");
+		File xmlFile = new File("/home/luizmatheus/tecgraf/csbaseDependency");
 		Graph graph = new Graph();
 		dependencyFinder.insertInGraphFromFile(xmlFile, graph, this.pattern);
 		System.out.println(graph.getVerticesSize());
-		String strGraph = graph.toString();
-		System.out.println(strGraph);
+		System.out.println("LISTS");
+		List[] lists = new List[2000];
+		for (int i = 0; i < 2000; ++i) {
+			System.out.println(i);
+			lists[i] = new ArrayList<>();
+			lists[i].addAll(graph.getVerticies());
+		}
+		//String strGraph = graph.toString();
+		//System.out.println(strGraph);
 	}
 
 }

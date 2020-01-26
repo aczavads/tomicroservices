@@ -9,22 +9,36 @@ import br.pucrio.inf.les.opus.tomicroservices.graph.Edge;
 import br.pucrio.inf.les.opus.tomicroservices.graph.Graph;
 import br.pucrio.inf.les.opus.tomicroservices.graph.Vertex;
 
+
+/**
+ * Enable in Dependency Finder:
+ * Packages
+ * classes
+ * features
+ * -->
+ * @author luizmatheus
+ *
+ */
 public class ReadDependencyFinderFile {
 	
 	public void insertInGraphFromFile(File xmlFile, Graph graph, ClassNamePattern pattern) {
 		try (BufferedReader reader = new BufferedReader(new FileReader(xmlFile))) {
 			String line = reader.readLine();
 			long i = 0l;
+			long vertexNumber = 0l;
 			while (line != null) {
-				System.out.println(++i);
 				if (isFeatureLine(line)) {
 					line = reader.readLine();
 					String name = getName(line);
+					if (isField(name)) {
+						line = reader.readLine();
+						continue;
+					}
 					line = reader.readLine();
 					while (isBound(line)) {
 						String bound = getBound(line);
 						try {
-							if (!pattern.isAcceptable(name) || !pattern.isAcceptable(bound)) {
+							if (isField(bound) || !pattern.isAcceptable(name) || !pattern.isAcceptable(bound)) {
 								line = reader.readLine();
 								continue;
 							}
@@ -39,8 +53,21 @@ public class ReadDependencyFinderFile {
 						} else {
 							edge = new Edge(vertex1, vertex2, true, 0l, 0l);
 						}
-						graph.insert(vertex1);
-						graph.insert(vertex2);
+						Vertex vertexResult1 = graph.insert(vertex1);
+						Vertex vertexResult2 = graph.insert(vertex2);
+						if (vertexResult1 == vertex1) {
+							//System.out.println(vertex1.getName());
+							System.out.println(++vertexNumber);
+							System.out.println("+ " + vertexResult1);
+						} else {
+							System.out.println("! " + vertexResult1);
+						}
+						if (vertexResult2 == vertex2) {
+							System.out.println("+ " + vertex2.getName());
+							System.out.println(++vertexNumber);
+						} else {
+							System.out.println("! " + vertexResult2);
+						}
 						line = reader.readLine();
 					}
 				} else {
@@ -50,6 +77,11 @@ public class ReadDependencyFinderFile {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		System.out.println("FINISHED");
+	}
+
+	private boolean isField(String name) {
+		return !(name.contains("(") || name.contains(")"));
 	}
 
 	private String removeWhiteSpace(String line) {

@@ -2,34 +2,17 @@ package br.pucrio.inf.les.opus.tomicroservices.metrics.overhead;
 
 import java.util.List;
 
-import br.pucrio.inf.les.opus.tomicroservices.metrics.ConvertValue;
 import br.pucrio.inf.les.opus.tomicroservices.metrics.MetricPerMicroservice;
 import br.pucrio.inf.les.opus.tomicroservices.metrics.MetricPerMicroserviceArchitecture;
 import br.pucrio.inf.les.opus.tomicroservices.optimization.Microservice;
 import br.pucrio.inf.les.opus.tomicroservices.optimization.MicroservicesSolution;
 
-public class ReusePerMicroserviceArchitecture implements MetricPerMicroserviceArchitecture {
-
-	private ConvertValue convertValue;
+public class CouplingPerMicroserviceArchitecture implements MetricPerMicroserviceArchitecture {
 	
 	private int objectiveIndexInProblem;
 	
-	private String userVertexName;
-	
-	private int threshold;
-	
-	public ReusePerMicroserviceArchitecture(String userVertexName, int threshold, ConvertValue convertValue) {
-		this.convertValue = convertValue;
-		startCommonFields(userVertexName, threshold);
-	}
-	
-	public ReusePerMicroserviceArchitecture(String userVertexName, int threshold) {
-		startCommonFields(userVertexName, threshold);
-	}
-	
-	private void startCommonFields(String userVertexName, int threshold) {
-		this.userVertexName = userVertexName;
-		this.threshold = threshold;
+	public CouplingPerMicroserviceArchitecture() {
+
 	}
 	
 	@Override
@@ -40,23 +23,22 @@ public class ReusePerMicroserviceArchitecture implements MetricPerMicroserviceAr
 	@Override
 	public double getValue(MicroservicesSolution microservicesSolution) {
 		List<Microservice> microservices = microservicesSolution.getMicroservices();
-		double msa = microservices.size();
 		double result = 0;
 		for (Microservice m: microservices) {
-			m.addOrUpdateMetric(new ReusePerMicroservice(this.userVertexName, this.threshold));
-			result += m.getMetricValue(ReusePerMicroservice.class.getName());
+			m.addOrUpdateMetric(new CouplingPerMicroservice());
+			result += m.getMetricValue(CouplingPerMicroservice.class.getName());
 		}
-		return this.convertValue.convert(result/msa);
+		return result;
 	}
 
 	@Override
 	public double printableValue(MicroservicesSolution microservicesSolution) {
-		return this.convertValue.convert(getValue(microservicesSolution));
+		return getValue(microservicesSolution);
 	}
 
 	@Override
 	public double printableValue(double value) {
-		return this.convertValue.convert(value);
+		return value;
 	}
 
 	@Override

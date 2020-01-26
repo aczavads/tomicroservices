@@ -1,5 +1,6 @@
 import java.io.File;
 import java.lang.instrument.Instrumentation;
+import java.util.jar.JarFile;
 
 /**
  * 
@@ -26,7 +27,13 @@ public class InjectSizeOf {
 			final File featureFile = new File(args[3]);
 			ClassNamePattern pattern = new ClassNamePattern(fileWithPatternArg, acceptArg);
 			Class.forName("java.lang.invoke.CallSite");
-			inst.addTransformer(new SizeOfTransformer(pattern, logFile, featureFile));
+			inst.appendToSystemClassLoaderSearch(new 
+					JarFile("/home/luizmatheus/tecgraf/someJars/algorithm-rest-service-2.7.1-SNAPSHOT.jar"));
+	        for (Class<?> clazz: inst.getAllLoadedClasses()) {
+	        	System.out.println("Loader:");
+	            System.out.println(clazz.getName());
+	        }
+			inst.addTransformer(new SizeOfTransformer(pattern, logFile, featureFile), true);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			e.printStackTrace();

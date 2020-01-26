@@ -32,13 +32,6 @@ public class OverheadMaxPerMicroserviceArchitecture implements MetricPerMicroser
 	
 	private double invertValue(double value) {
 		return value;
-		/**
-		if (value != 0l) {
-			return 1.0f/value;
-		} else {
-			return Double.MAX_VALUE;
-		}
-		**/
 	}
 
 	@Override

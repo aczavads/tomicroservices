@@ -45,7 +45,7 @@ class MicroserviceTest {
 		Microservice microservice = new Microservice(this.verticiesInAMicroservice);
 		MetricPerMicroservice metric = new OverheadMaxPerMicroservice();
 		microservice.addOrUpdateMetric(metric);
-		long overheadResult = microservice.getMetricValue(metric.getName());
+		double overheadResult = microservice.getMetricValue(metric.getName());
 		assertEquals(overheadExpected, overheadResult);
 	}
 	

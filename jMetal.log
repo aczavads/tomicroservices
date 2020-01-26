@@ -2,9 +2,9 @@
 <!DOCTYPE log SYSTEM "logger.dtd">
 <log>
 <record>
-  <date>2020-01-17T00:24:34.206946Z</date>
-  <millis>1579220674206</millis>
-  <nanos>946000</nanos>
+  <date>2020-01-21T13:28:05.365203Z</date>
+  <millis>1579613285365</millis>
+  <nanos>203000</nanos>
   <sequence>0</sequence>
   <logger>org.uma.jmetal.util.JMetalLogger</logger>
   <level>INFO</level>
@@ -14,15 +14,15 @@
   <message>Loggers configured with null</message>
 </record>
 <record>
-  <date>2020-01-17T00:24:34.285781Z</date>
-  <millis>1579220674285</millis>
-  <nanos>781000</nanos>
+  <date>2020-01-21T13:28:05.423516Z</date>
+  <millis>1579613285423</millis>
+  <nanos>516000</nanos>
   <sequence>1</sequence>
   <logger>org.uma.jmetal.util.JMetalLogger</logger>
   <level>INFO</level>
   <class>org.uma.jmetal.algorithm.multiobjective.nsgaiii.NSGAIII</class>
   <method>&lt;init&gt;</method>
   <thread>1</thread>
-  <message>rpssize: 1</message>
+  <message>rpssize: 1820</message>
 </record>
 </log>

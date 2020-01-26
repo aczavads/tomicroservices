@@ -100,7 +100,6 @@ public class Microservice implements HasMetric<MetricPerMicroservice> {
 		if (verticies == null) return;
 		for (Vertex vertex : verticies) {
 			this.verticiesName.remove(vertex.getName());
-			//this.verticies.remove(vertex);
 		}
 		this.verticies.removeAll(verticies);
 	}

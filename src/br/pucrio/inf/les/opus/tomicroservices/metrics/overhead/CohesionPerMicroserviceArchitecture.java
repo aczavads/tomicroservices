@@ -8,28 +8,14 @@ import br.pucrio.inf.les.opus.tomicroservices.metrics.MetricPerMicroserviceArchi
 import br.pucrio.inf.les.opus.tomicroservices.optimization.Microservice;
 import br.pucrio.inf.les.opus.tomicroservices.optimization.MicroservicesSolution;
 
-public class ReusePerMicroserviceArchitecture implements MetricPerMicroserviceArchitecture {
+public class CohesionPerMicroserviceArchitecture implements MetricPerMicroserviceArchitecture {
 
 	private ConvertValue convertValue;
 	
 	private int objectiveIndexInProblem;
 	
-	private String userVertexName;
-	
-	private int threshold;
-	
-	public ReusePerMicroserviceArchitecture(String userVertexName, int threshold, ConvertValue convertValue) {
+	public CohesionPerMicroserviceArchitecture(ConvertValue convertValue) {
 		this.convertValue = convertValue;
-		startCommonFields(userVertexName, threshold);
-	}
-	
-	public ReusePerMicroserviceArchitecture(String userVertexName, int threshold) {
-		startCommonFields(userVertexName, threshold);
-	}
-	
-	private void startCommonFields(String userVertexName, int threshold) {
-		this.userVertexName = userVertexName;
-		this.threshold = threshold;
 	}
 	
 	@Override
@@ -40,13 +26,16 @@ public class ReusePerMicroserviceArchitecture implements MetricPerMicroserviceAr
 	@Override
 	public double getValue(MicroservicesSolution microservicesSolution) {
 		List<Microservice> microservices = microservicesSolution.getMicroservices();
-		double msa = microservices.size();
 		double result = 0;
 		for (Microservice m: microservices) {
-			m.addOrUpdateMetric(new ReusePerMicroservice(this.userVertexName, this.threshold));
-			result += m.getMetricValue(ReusePerMicroservice.class.getName());
+			m.addOrUpdateMetric(new CohesionPerMicroservice());
+			result += m.getMetricValue(CohesionPerMicroservice.class.getName());
+			System.out.println(m);
+			if (Double.isNaN(result)) {
+				System.out.println("IT'S IT");
+			}
 		}
-		return this.convertValue.convert(result/msa);
+		return this.convertValue.convert(result);
 	}
 
 	@Override
@@ -73,5 +62,4 @@ public class ReusePerMicroserviceArchitecture implements MetricPerMicroserviceAr
 	public int getObjectiveIndex() {
 		return this.objectiveIndexInProblem;
 	}
-
 }

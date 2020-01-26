@@ -105,7 +105,6 @@ public class MicroservicesSolution implements DoubleSolution {
 
 	@Override
 	public int getNumberOfVariables() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 

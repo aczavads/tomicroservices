@@ -82,6 +82,7 @@ public class MicroservicesCrossover implements CrossoverOperator<MicroservicesSo
 			Microservice m2 = lMicroservice.get(m2Index);
 			List<Vertex> m1Verticies = m1.getVerticies();
 			List<Vertex> selectedVerticies = m1Verticies.subList(0, (int) (m1Verticies.size() * this.crossoverFraction));
+			selectedVerticies = new ArrayList<Vertex>(selectedVerticies);
 			List<Vertex> selectedVerticiesCopy = new ArrayList<Vertex>(selectedVerticies);
 			m1.removeAndAddVerticies(selectedVerticies, null);
 			m2.removeAndAddVerticies(null, selectedVerticiesCopy);

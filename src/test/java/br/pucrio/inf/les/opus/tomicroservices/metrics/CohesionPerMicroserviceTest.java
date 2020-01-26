@@ -74,4 +74,18 @@ public class CohesionPerMicroserviceTest {
 		assertEquals(Precision.round(cohesionExpected, 2), Precision.round(cohesionResult, 2));
 	}
 	
+	@Test
+	public void cohesionOnlyOneVertex() {
+		double expected = 0;
+		graph = new Graph();
+		this.verticiesInAMicroservice = new ArrayList<Vertex>();
+		Vertex vertexA = new Vertex("A");
+		graph.insert(vertexA);
+		this.verticiesInAMicroservice.add(vertexA);
+		MetricPerMicroservice metric = new CohesionPerMicroservice();
+		Microservice microservice = new Microservice(this.verticiesInAMicroservice);
+		microservice.addOrUpdateMetric(metric);
+		double cohesionResult = microservice.getMetricValue(metric.getName());
+		assertEquals(expected, cohesionResult);
+	}
 }

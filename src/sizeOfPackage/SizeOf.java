@@ -31,7 +31,7 @@ public class SizeOf {
 	
 	public static long deep = 0l;
 
-	public static void addFeatureInLog() {
+	public synchronized static void addFeatureInLog() {
 		try (BufferedReader reader = new BufferedReader(new FileReader(featureInfo))) {
 			String currentContent = "";
 			boolean start = true;
@@ -60,14 +60,14 @@ public class SizeOf {
 		}
 	}
 	
-	public static void decreaseDeep() {
+	public synchronized static void decreaseDeep() {
 		deep = deep - 1l;
 	}
 	
-	public static void saveSizeOfLog(String fromClassName, String fromMethodName, long sizeOf) {
+	public synchronized static void saveSizeOfLog(String fromClassName, String fromMethodName, long sizeOf) {
 		++deep;
 		String log = "Class:" + fromClassName + "#" + "Method:" + fromMethodName + 
-				"#" + "SizeOf:" + sizeOf + '#' + "Deep:" + deep;
+				"#" + "SizeOf:" + sizeOf + '#' + "Deep:" + deep + '#' + "Thread:" + Thread.currentThread().getName();
 		addFeatureInLog();
 		try(BufferedWriter writer = new BufferedWriter(new FileWriter(sizeOfLog, true));
 				PrintWriter out = new PrintWriter(writer)) {
@@ -82,7 +82,7 @@ public class SizeOf {
 	 * @param bytes bytes
 	 * @return megabyte
 	 */
-	public static double convertBytesToMegaByte(long bytes) {
+	public synchronized static double convertBytesToMegaByte(long bytes) {
 		return ( (double)bytes ) / ( (double)1000000 );
 	}
 	
@@ -93,7 +93,7 @@ public class SizeOf {
 	 * @throws IllegalAccessException 
 	 * @throws IllegalArgumentException 
 	 */
-	public static long sizeOfArray(Object o, int deepRecursion) throws IllegalArgumentException, IllegalAccessException {
+	public synchronized static long sizeOfArray(Object o, int deepRecursion) throws IllegalArgumentException, IllegalAccessException {
 		Class<?> _class = o.getClass();
 		Class<?> componentType = _class.getComponentType();
 		
@@ -136,7 +136,7 @@ public class SizeOf {
 	 * @param o e.g: Character or Number
 	 * @return size
 	 */
-	private static long sizeOfPrimtive(Object o) {
+	private synchronized static long sizeOfPrimtive(Object o) {
 		long sum = 0;
 		if (o instanceof Character) {
 			Character c = (Character) o;
@@ -159,8 +159,11 @@ public class SizeOf {
 		} else if (o instanceof Double) {
 			Double n = (Double) o;
 			sum = ClassLayout.parseInstance(n.doubleValue()).instanceSize();
+		} else if (o instanceof Boolean) { 
+			Boolean n = (Boolean) o;
+			sum = ClassLayout.parseInstance(n.booleanValue()).instanceSize();
 		} else {
-			System.err.println(o + " is not a primitive type");
+			System.err.println(o + " is not a primitive type " + o.getClass().getName());
 		}
 		return sum;
 	}
@@ -170,7 +173,7 @@ public class SizeOf {
 	 * @param o object
 	 * @return whether o is primitive type return true. Otherwise, return false.
 	 */
-	private static boolean isPrimitive(Object o) {
+	private synchronized static boolean isPrimitive(Object o) {
 		return o instanceof Character || o instanceof Number ||
 				o instanceof Boolean;
 	}
@@ -182,7 +185,7 @@ public class SizeOf {
 	 * @throws IllegalArgumentException
 	 * @throws IllegalAccessException
 	 */
-	public static long sizeOf(Object o) {
+	public synchronized static long sizeOf(Object o) {
 		try {
 			return sizeOf(o, 1);
 		} catch (Exception e) {
@@ -195,7 +198,7 @@ public class SizeOf {
 	public static Map<Integer, Boolean> mObjects = new HashMap<Integer, Boolean>();
 	
 	
-	public static boolean isIgnoredClass(String name) {
+	public synchronized static boolean isIgnoredClass(String name) {
 		if (name.startsWith("org.glassfish")) {
 			return true;
 		}
@@ -209,13 +212,18 @@ public class SizeOf {
 	 * @throws IllegalArgumentException
 	 * @throws IllegalAccessException
 	 */
-	public static long sizeOf(Object o, int deepRecursion) throws IllegalArgumentException, IllegalAccessException {
-		if (isIgnoredClass(o.getClass().getName())) {
+	public synchronized static long sizeOf(Object o, int deepRecursion) throws IllegalArgumentException, IllegalAccessException {
+		if (o == null) {
 			return 0;
 		}
+		if (o.getClass() != null) {
+			if (isIgnoredClass(o.getClass().getName())) {
+				return 0;
+			}
+		}
 		int hashCode = System.identityHashCode(o);
-		System.out.println(o.getClass().getName());
-		System.out.println(hashCode);
+		//System.out.println(o.getClass().getName());
+		//System.out.println(hashCode);
 		if (deepRecursion == 1) {
 			mObjects.clear();
 		}
@@ -224,23 +232,22 @@ public class SizeOf {
 		} else {
 			mObjects.put(new Integer(hashCode), true);
 		}
-		/** if (deepRecursion >= 10) {
-			return 0;
-		}
-		**/
-		System.out.println("DEEP>>>>>>>>>>>>>>>>>>>>>>>>>>  "+ deepRecursion);
+		//System.out.println("DEEP>>>>>>>>>>>>>>>>>>>>>>>>>>  "+ deepRecursion);
 		long sum = 0;
 		Class<?> _class = o.getClass();
 		if (isPrimitive(o)) {
 			sum = sizeOfPrimtive(o);
 		} else if (_class.isArray()) {
-			sum = sizeOfArray(o, deepRecursion);
+			//sum = sizeOfArray(o, deepRecursion);
+			sum = 100l;
 		} else {
 			Field[] fields = _class.getDeclaredFields();
 			Method[] methods = _class.getMethods();
+			/**
 			for (Method m: methods) {
 				System.out.println(m.toString());
 			}
+			**/
 			for (Field field : fields) {
 				field.setAccessible(true);
 				Object value = field.get(o); 
@@ -256,35 +263,35 @@ public class SizeOf {
 		return sum;
 	}
 	
-	public static long sizeOf(int pt) {
+	public synchronized static long sizeOf(int pt) {
 		return sizeOfPrimtive(new Integer(pt));
 	}
 	
-	public static long sizeOf(long pt) {
+	public synchronized static long sizeOf(long pt) {
 		return sizeOfPrimtive(new Long(pt));
 	}
 	
-	public static long sizeOf(float pt) {
+	public synchronized static long sizeOf(float pt) {
 		return sizeOfPrimtive(new Float(pt));
 	}
 	
-	public static long sizeOf(double pt) {
+	public synchronized static long sizeOf(double pt) {
 		return sizeOfPrimtive(new Double(pt));
 	}
 	
-	public static long sizeOf(char pt) {
+	public synchronized static long sizeOf(char pt) {
 		return sizeOfPrimtive(new Character(pt));
 	}
 	
-	public static long sizeOf(byte pt) {
+	public synchronized static long sizeOf(byte pt) {
 		return sizeOfPrimtive(new Byte(pt));
 	}
 	
-	public static long sizeOf(short pt) {
+	public synchronized static long sizeOf(short pt) {
 		return sizeOfPrimtive(new Short(pt));
 	}
 	
-	public static long sizeOf(boolean pt) {
+	public synchronized static long sizeOf(boolean pt) {
 		return sizeOfPrimtive(new Boolean(pt));
 	}
 

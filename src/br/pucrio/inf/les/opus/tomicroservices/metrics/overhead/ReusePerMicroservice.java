@@ -85,8 +85,12 @@ public class ReusePerMicroservice implements MetricPerMicroservice  {
 		nameToBoolean(oldVerticiesInMicroservices, nameToBoolean, true);
 		nameToBoolean(removedVerticies, nameToBoolean, false);
 		List<Vertex> verticies = new ArrayList<Vertex>();
-		verticies.addAll(addedVerticies);
-		verticies.addAll(oldVerticiesInMicroservices);
+		if (addedVerticies != null) {
+			verticies.addAll(addedVerticies);
+		} 
+		if (oldVerticiesInMicroservices != null) {
+			verticies.addAll(oldVerticiesInMicroservices);
+		}
 		return calcValue(verticies, nameToBoolean);
 	}
 

@@ -1,5 +1,6 @@
 package br.pucrio.inf.les.opus.tomicroservices.metrics.overhead;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -106,9 +107,11 @@ public class OverheadMaxPerMicroservice implements MetricPerMicroservice {
 		double removeValue = 0;
 		double newValueMetric = 0;
 		if (removedVerticies != null) {
-			for (Vertex vertex: removedVerticies) {
-				removeValue += metricPerVertex(vertex, addedVerticies, null, 
-						oldVerticiesInMicroservices, removedVerticies);
+			for (int i = 0; i < removedVerticies.size(); ++i) {
+				Vertex vertex = removedVerticies.get(i);
+				//removeValue += metricPerVertex(vertex, addedVerticies, null, oldVerticiesInMicroservices, removedVerticies);
+				removeValue += metricPerVertex(vertex, addedVerticies, null, oldVerticiesInMicroservices, 
+						new ArrayList<Vertex>(removedVerticies));
 			}
 		}
 		if (addedVerticies != null) {
