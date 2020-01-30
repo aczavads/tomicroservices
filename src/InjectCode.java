@@ -1,7 +1,9 @@
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+
+import org.apache.commons.io.FileUtils;
 
 public class InjectCode {
 	
@@ -13,16 +15,26 @@ public class InjectCode {
 	private String featureFile;
 	
 	private int ignoreAnotationWithPoint(int point) {
+		if (contentFile[point] == '@') {
+			++point;
+		}
 		char end = ' ';
 		while (point < contentFile.length) {
-			if (contentFile[point] == '(') {
+			if (contentFile[point] == '@') {
+				point = ignoreAnotationWithPoint(point);
+			} else if (contentFile[point] == '/' ) {
+				point = ignoreCommentWithPoint(point);
+			} else if (contentFile[point] == '\'' || contentFile[point] == '\"') {
+				point = ignoreStringWithPoint(point);
+			} else if (contentFile[point] == '(') {
 				end = ')';
-			}
-			if (contentFile[point] == end) {
 				++point;
+			} else if (contentFile[point] == end) {
+				//++point;
 				return point;
+			} else {
+				++point;
 			}
-			++point;
 		}
 		return point;
 	}
@@ -31,8 +43,38 @@ public class InjectCode {
 		point = ignoreAnotationWithPoint(point);
 	}
 	
-	public String injectCodeInAllFiles(File file) {
-		return featureFile;
+	public boolean injectCodeInAllFiles(File file, String logPath, String featurePath) {
+		if (file.exists()) {
+			String diName = file.getName();
+			if (diName.equals("test") || diName.equals("testcases") || 
+					diName.equals("testutils")) {
+				return false;
+			}
+			if (file.isDirectory()) {
+				File[] files = file.listFiles();
+				for (File f : files) {
+					injectCodeInAllFiles(f, logPath, featurePath);
+				}
+				return true;
+			} else {
+				String name = file.getName();
+				if (name.endsWith(".java")) {
+					if (name.endsWith("Test.java")) { return false; }
+					char[] contentFile;
+					try {
+						contentFile = FileUtils.readFileToString(file, "UTF-8").toCharArray();
+						System.out.println("Inject in " + name);
+						String newContent = injectCodeMethods(contentFile, logPath, featurePath);
+						FileUtils.write(file, newContent, "UTF-8", false);
+						return true;
+					} catch (IOException e) {
+						e.printStackTrace();
+						return false;
+					}
+				}
+			}
+		}
+		return false;
 	}
 	
 	public String injectCodeMethods(char[] contentFile, String logFile, String featureFile) {
@@ -58,6 +100,9 @@ public class InjectCode {
 					injectCodeInBodyAndEndMethod();
 				}
 			}
+		}
+		if (lastModified == 0) {
+			return new String(contentFile);
 		}
 		return result + new String(contentFile, lastModified, point - lastModified - 1);
 	}
@@ -97,7 +142,7 @@ public class InjectCode {
 				ignoreComment();
 			}  else if (contentFile[point] == '\'' || contentFile[point] == '\"') {
 				ignoreString();
-			} else if (contentFile[point] == 'r') {
+			} /**else if (contentFile[point] == 'r') {
 				if (isReturn(point)) {
 					String inject = "sizeOfPackage.SizeOf.decreaseDeep();";
 					result += new String(contentFile, lastModified, point - lastModified);
@@ -105,11 +150,12 @@ public class InjectCode {
 					lastModified = point;
 				}
 				++point;
-			} else if (contentFile[point] == '}') {
+			} **/ 
+			else if (contentFile[point] == '}') {
 				--countOpen;
 				if (countOpen == 0) {
-					String inject = "} catch (Throwable e) {\n" + 
-							"			sizeOfPackage.SizeOf.decreaseDeep();\n throw e;\n" + 
+					String inject = "} catch (Throwable eeeeeeee_e) {\n" + 
+							"			throw eeeeeeee_e;\n" + 
 							"		} finally {\n" + 
 							"			sizeOfPackage.SizeOf.decreaseDeep();\n" + 
 							"		} ";
@@ -132,27 +178,36 @@ public class InjectCode {
 	private void ignoreComment() {
 		point = ignoreCommentWithPoint(point);
 	}
-
+	
 	private int ignoreCommentWithPoint(int point) {
 		char first = contentFile[point];
 		char second = contentFile[point + 1];
 		char firstEnd;
 		char secondEnd;
+		boolean onlyOne = false;
 		if (first == '/' && second == '/') {
-			firstEnd = '\\';
-			secondEnd = 'n';
+			firstEnd = '\n';
+			secondEnd = ' ';
+			onlyOne = true;
 		} else if (first == '/' && second == '*') {
 			firstEnd = '*';
 			secondEnd = '/';
 		} else {
-			return point;
+			return ++point;
 		}
 		point += 2;
-		while (point < contentFile.length) {
-			if (contentFile[point] == firstEnd && contentFile[point + 1] == secondEnd) {
-				point += 2;
-				return point;
+		while (point < contentFile.length - 1) {
+			if (onlyOne) {
+				if (contentFile[point] == firstEnd) {
+					return point + 1;
+				}
+			} else {
+				if (contentFile[point] == firstEnd && contentFile[point + 1] == secondEnd) {
+					point += 2;
+					return point;
+				}
 			}
+			++point;
 		}
 		return point;
 	}
@@ -173,7 +228,9 @@ public class InjectCode {
 			return point;
 		}
 		while (point < contentFile.length) {
-			if (contentFile[point] == '\\' && contentFile[point + 1] == end) {
+			if (contentFile[point] == '\\' && contentFile[point + 1] == '\\') {
+				point += 2;
+			} else if (contentFile[point] == '\\' && contentFile[point + 1] == end) {
 				point += 2;
 			} else if (contentFile[point] == end) {
 				return point + 1;
@@ -185,11 +242,13 @@ public class InjectCode {
 	}
 
 	private void injectCodeMethod(List<String> parameters) {
-		String callMethod = "sizeOfPackage.SizeOf.sizeOfLog = new java.io.File(" + logFile + "); ";
-		callMethod += "sizeOfPackage.SizeOf.featureInfo = new java.io.File(" + featureFile + "); ";
+		String callMethod = "sizeOfPackage.SizeOf.sizeOfLog = new java.io.File(\"" + logFile + "\"); ";
+		callMethod += "sizeOfPackage.SizeOf.featureInfo = new java.io.File(\"" + featureFile + "\"); ";
 		callMethod += "try { sizeOfPackage.SizeOf.saveSizeOfLog(";
-		callMethod += "new Object().getClass().getEnclosingClass().getName(), ";
-		callMethod += "new Object().getClass().getEnclosingMethod().getName(), ";
+		//callMethod += "new Object().getClass().getEnclosingClass().getName(), ";
+		//callMethod += "new Object().getClass().getEnclosingMethod().getName(), ";
+		callMethod += "new java.lang.Throwable().getStackTrace()[0].getClassName(), ";
+		callMethod += "new java.lang.Throwable().getStackTrace()[0].getMethodName(), ";
 		if (parameters.isEmpty()) {
 			callMethod += "0l";
 		} else {
@@ -206,7 +265,7 @@ public class InjectCode {
 		callMethod += "); ";
 		result += new String(contentFile, lastModified, point - lastModified + 1);
 		result += callMethod;
-		lastModified = point + 1; //can be a problem
+		lastModified = point + 1; 
 	}
 
 	private List<String> getParameters(int openStart, int startBlock) {
@@ -231,9 +290,16 @@ public class InjectCode {
 			}
 			str += contentFile[i];
 		}
+		str = str.replace(",final ", ", ");
+		str = str.replace("(final ", "( ");
+		str = str.replace(" final ", "( ");
 		int index = str.indexOf(")");
 		str = str.substring(0, index);
 		str = str.replace("(", "");
+		str = str.replace("\n", " ");
+		str = str.replace("\t", " ");
+		str = str.replaceAll("<.*?>", "");
+		str = str.replace("[]", "");
 		String typeAndParameters[] = str.split(",");
 		for (int i = 0; i < typeAndParameters.length; i = i + 1) {
 			char typeAndParameter[] = typeAndParameters[i].toCharArray();
@@ -266,7 +332,17 @@ public class InjectCode {
 		final String keys[] = {"this", "super", "if", "switch", "while", "for", 
 				"synchronized", "catch"};
 		for (int i = 0; i < keys.length; ++i) {
-			if (keys[i].equals("word")) {
+			if (keys[i].equals(word)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	private boolean isModifier(String word) {
+		final String mod[] = {"public", "protected", "private"};
+		for (int i = 0; i < mod.length; ++i) {
+			if (mod[i].equals(word)) {
 				return true;
 			}
 		}
@@ -274,21 +350,18 @@ public class InjectCode {
 	}
 	
 	private boolean isMethod() {
-		int ret = point - 1;
-		String lastWord = "";
-		boolean findWord = false;
-		while (ret >= 0) {
-			if (contentFile[ret] != ' ') {
-				findWord = true;
-				lastWord = contentFile[ret] + lastWord;
-			} else {
-				if (findWord) {
-					break;
-				}
-			}
-			--ret;
+		String lastWord = previousWord(point, 1);
+		if (isKeyWord(lastWord) || lastWord.contains(")")) {
+			return false;
 		}
-		if (isKeyWord(lastWord)) {
+		lastWord = previousWord(point, 2);
+		if (isModifier(lastWord) || lastWord.equals("new") || lastWord.contains(";") || 
+				lastWord.contains("}") || lastWord.contains("/") || lastWord.contains("*/") || 
+				lastWord.contains(",")) {
+			return false;
+		}
+		lastWord = previousWord(point, 3);
+		if (lastWord.equals("new")) {
 			return false;
 		}
 		while (point < contentFile.length) {
@@ -300,6 +373,8 @@ public class InjectCode {
 				ignoreString();
 			} else if (contentFile[point] == ';') {
 				return false;
+			} else if (isNewKeyWord()) {
+				return false;
 			} else if (contentFile[point] == '{') {
 				return true;
 			} else {
@@ -307,6 +382,46 @@ public class InjectCode {
 			}
 		}
 		return false;
+	}
+
+	private boolean isNewKeyWord() {
+		return contentFile[point] == 'n' && contentFile[point+1] == 'e' && contentFile[point+2] == 'w' 
+				&& contentFile[point+3] == ' ';
+	}
+
+	private int skipSpaceBreakAndTab(int point, int move) {
+		char current = contentFile[point];
+		while (current == ' ' || current == '\n' || current == '\t') {
+			point = point + move;
+			current = contentFile[point];
+		}
+		return point;
+	}
+	
+	private String previousWord(int point, int previousOrder) {
+		--previousOrder;
+		int ret = point - 1;
+		boolean findWord = false;
+		String lastWord = "";
+		ret = skipSpaceBreakAndTab(ret, -1);
+		while (ret >= 0) {
+			if (contentFile[ret] != ' ' && contentFile[ret] != '\n' 
+					&& contentFile[ret] != '\t') {
+				if (previousOrder == 0) {
+					findWord = true;
+					lastWord = contentFile[ret] + lastWord;
+				}
+			} else {
+				if (findWord) {
+					break;
+				} else {
+					ret = skipSpaceBreakAndTab(ret, -1) + 1;
+					--previousOrder;
+				}
+			}
+			--ret;
+		}
+		return lastWord;
 	}
 
 }

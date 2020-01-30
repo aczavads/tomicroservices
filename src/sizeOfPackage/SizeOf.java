@@ -107,6 +107,9 @@ public class SizeOf {
 		Object firstElement = null;
 		while (componentType.isArray()) {
 			firstElement = Array.get(o, firstElementIndex);
+			if (firstElement == null) {
+				break;
+			}
 			size *= Array.getLength(firstElement);
 			o = firstElement;
 			componentType = componentType.getComponentType();
@@ -114,7 +117,8 @@ public class SizeOf {
 		firstElement = Array.get(o, firstElementIndex);
 		long elementSize = 0;
 		if (isPrimitive(firstElement)) {
-			elementSize = ClassLayout.parseInstance(firstElement).instanceSize();
+			//elementSize = ClassLayout.parseInstance(firstElement).instanceSize();
+			elementSize = sizeOfPrimtive(firstElement);
 		} else {
 			if (firstElement == null) {
 				elementSize = 0;
@@ -163,7 +167,7 @@ public class SizeOf {
 			Boolean n = (Boolean) o;
 			sum = ClassLayout.parseInstance(n.booleanValue()).instanceSize();
 		} else {
-			System.err.println(o + " is not a primitive type " + o.getClass().getName());
+			sum = ClassLayout.parseInstance(new Double(Double.MAX_VALUE)).instanceSize() * 10;
 		}
 		return sum;
 	}

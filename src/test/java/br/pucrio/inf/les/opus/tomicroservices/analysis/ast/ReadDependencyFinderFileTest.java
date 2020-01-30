@@ -11,7 +11,7 @@ import br.pucrio.inf.les.opus.tomicroservices.graph.Graph;
 class ReadDependencyFinderFileTest {
 
 	File patternFile;
-	ClassNamePattern pattern;
+	//ClassNamePattern pattern;
 	
 	/**
 	@BeforeEach
@@ -127,7 +127,6 @@ class ReadDependencyFinderFileTest {
 			e.printStackTrace();
 		}
 	}
-	**/
 	
 	@Test
 	void test() {
@@ -149,5 +148,7 @@ class ReadDependencyFinderFileTest {
 		//String strGraph = graph.toString();
 		//System.out.println(strGraph);
 	}
+		**/
+
 
 }
