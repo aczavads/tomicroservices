@@ -21,7 +21,7 @@ import br.pucrio.inf.les.opus.tomicroservices.graph.Vertex;
  */
 public class ReadDependencyFinderFile {
 	
-	public void insertInGraphFromFile(File xmlFile, Graph graph, ClassNamePattern pattern) {
+	public void insertInGraphFromFile(File xmlFile, Graph graph, ClassNamePattern pattern, ClassNamePattern reject) {
 		try (BufferedReader reader = new BufferedReader(new FileReader(xmlFile))) {
 			String line = reader.readLine();
 			long i = 0l;
@@ -38,14 +38,20 @@ public class ReadDependencyFinderFile {
 					while (isBound(line)) {
 						String bound = getBound(line);
 						try {
-							if (isField(bound) || !pattern.isAcceptable(name) || !pattern.isAcceptable(bound)) {
+							if (bound.startsWith("csbase.client") || name.startsWith("csbase.client")) {
+								//System.out.println("Rejected.");
+							}
+							if (isField(bound) || !pattern.isAcceptable(name) || !pattern.isAcceptable(bound)
+									|| !reject.isAcceptable(name) || !reject.isAcceptable(bound)) {
 								line = reader.readLine();
 								continue;
 							}
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
+						name = name.replaceAll("\\(.*\\)", "");
 						Vertex vertex1 = new Vertex(name);
+						bound = bound.replaceAll("\\(.*\\)", "");
 						Vertex vertex2 = new Vertex(bound);
 						Edge edge;
 						if (isInbound(line)) {
@@ -55,19 +61,6 @@ public class ReadDependencyFinderFile {
 						}
 						Vertex vertexResult1 = graph.insert(vertex1);
 						Vertex vertexResult2 = graph.insert(vertex2);
-						if (vertexResult1 == vertex1) {
-							//System.out.println(vertex1.getName());
-							System.out.println(++vertexNumber);
-							System.out.println("+ " + vertexResult1);
-						} else {
-							System.out.println("! " + vertexResult1);
-						}
-						if (vertexResult2 == vertex2) {
-							System.out.println("+ " + vertex2.getName());
-							System.out.println(++vertexNumber);
-						} else {
-							System.out.println("! " + vertexResult2);
-						}
 						line = reader.readLine();
 					}
 				} else {
@@ -77,7 +70,6 @@ public class ReadDependencyFinderFile {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		System.out.println("FINISHED");
 	}
 
 	private boolean isField(String name) {

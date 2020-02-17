@@ -55,9 +55,14 @@ public class DynamicLogAnalyzer {
 		} catch (Exception e) {
 			return false;
 		}
-		final int elementSize = 4;
+		String threadName = classMethodSizeOfAndDeep.get("Thread");
+		if (!threadName.contains("Grizzly-worker")) {
+			return false;
+		}
+		final int elementSize = 5;
 		return classMethodSizeOfAndDeep.containsKey("Class") && classMethodSizeOfAndDeep.containsKey("Method") &&
-				classMethodSizeOfAndDeep.containsKey("SizeOf") && classMethodSizeOfAndDeep.containsKey("Deep")
+				classMethodSizeOfAndDeep.containsKey("SizeOf") && classMethodSizeOfAndDeep.containsKey("Deep") &&
+				classMethodSizeOfAndDeep.containsKey("Thread")
 				&& classMethodSizeOfAndDeep.size() == elementSize;
 	}
 	
@@ -83,7 +88,9 @@ public class DynamicLogAnalyzer {
 						classPatternToFunctionality.put(pattern, functionalityName);
 					}
 				} else {
-					functionalitiesToAllCases.add(func);
+					if (func.length() > 0) {
+						functionalitiesToAllCases.add(func);
+					}
 				}
 			}
 			return true;
@@ -101,9 +108,12 @@ public class DynamicLogAnalyzer {
 	private void addPatterns(String absoluteName, List<String> result, Map<String, String> mPattern) {
 		Set<String> keys = mPattern.keySet();
 		for (String key: keys) {
-			if (key.matches(absoluteName)) {
+			if (absoluteName.startsWith(key)) {
 				result.add(mPattern.get(key));
 			}
+			//if (absoluteName.matches(key)) {
+			//	result.add(mPattern.get(key));
+			//}
 		}
 		return;
 	}
@@ -128,7 +138,7 @@ public class DynamicLogAnalyzer {
 			if (verifyValues(result)) {
 				return result;
 			} else {
-				System.err.println("Line out of standard: " + line + " in line " + count);
+				//System.err.println("Line out of standard: " + line + " in line " + count);
 			}
 			line = reader.readLine();
 		}
@@ -145,6 +155,7 @@ public class DynamicLogAnalyzer {
 				funcs = new ArrayList<String>();
 				funcs.addAll(this.generalFunctionalitiesToAllCases);
 				funcs.addAll(this.functionalitiesToAllCases);
+				this.enableFunctionatiles.addFunctionalitites(deep, funcs);
 			}
 		}
 		return new Vertex(name, funcs);
@@ -186,8 +197,10 @@ public class DynamicLogAnalyzer {
 					String nextMethod = classMethodsSizeOfAndDeep.get("Method");
 					sizeOf = Long.parseLong(classMethodsSizeOfAndDeep.get("SizeOf"));
 					deep = Long.parseLong(classMethodsSizeOfAndDeep.get("Deep"));
+					
 					targetVertex = generateVertex(nextClass + "." + nextMethod, deep);
-					new Edge(sourceVertex, targetVertex, false, 1l, sizeOf);
+					//new Edge(sourceVertex, targetVertex, false, 1l, sizeOf);
+					new Edge(sourceVertex, targetVertex, true, 1l, sizeOf);
 					sourceVertex = graph.insert(sourceVertex);
 					targetVertex = graph.insert(targetVertex);
 					sourceVertex = targetVertex;

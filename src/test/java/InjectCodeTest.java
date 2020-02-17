@@ -418,16 +418,16 @@ public class InjectCodeTest {
 		System.out.println(result);
 	}
 	
-	@Test
+	//@Test
 	public void testOneMethod() {
-		String javaFolder = "/home/luizmatheus/tecgraf/csbase";
+		String javaFolder = "/home/luizmatheus/tecgraf/rest-services";
 		InjectCode injectCode = new InjectCode();
 		boolean result = injectCode.injectCodeInAllFiles(new File(javaFolder), 
 				"/home/luizmatheus/tecgraf/csgrid/csgrid-server/agent/log", 
 				"/home/luizmatheus/tecgraf/csgrid/csgrid-server/agent/feature");
 	}
 	
-	//@Test
+	@Test
 	public void testOndeMethod() {
 		InjectCode injectCode = new InjectCode();
 		String methodFile = "public void name(@(\"sdsd\")String a, String b) { return a; return b; \\* sadads *\\ block; }";

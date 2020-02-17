@@ -11,7 +11,7 @@ import org.apache.commons.cli.ParseException;
 import br.pucrio.inf.les.opus.tomicroservices.graph.PrintGraph;
 
 public class Main {
-
+	/**
 	public static void main(String[] args) {
 		Options options = new Options();
 		final String logFileOption = "logfile";
@@ -49,5 +49,6 @@ public class Main {
 			e.printStackTrace();
 		}
 	}
+	**/
 	
 }

@@ -48,6 +48,9 @@ public class FunctionalityPerMicroservice implements MetricPerMicroservice {
 		this.predominantFunctionalityName = predominantFunctionalityName;
 		this.totalFunctionalities = this.functionalitiesToFrequency.size();
 		this.totalFrequencyFunctionalities = total;
+		if (total == 0) {
+			return 0;
+		}
 		return ((double)predominantFunctionality / (double)total);
 	}
 	

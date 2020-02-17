@@ -13,7 +13,7 @@ public class MicroservicesSolution implements DoubleSolution {
 	
 	private List<Microservice> microservices;
 	private List<Double> objectives;
-	
+		
 	public List<Microservice> getMicroservices() {
 		return this.microservices;
 	}
@@ -140,6 +140,17 @@ public class MicroservicesSolution implements DoubleSolution {
 	public Double getUpperBound(int index) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	public String print() {
+		String result = "";
+		int count = 0;
+		for (Microservice m : this.microservices) {
+			result += "microservice" + count + "\n";
+			result += m.print() + "\n";
+			++count;
+		}
+		return result;
 	}
 	
 	public String toString() {

@@ -49,6 +49,14 @@ public class Edge {
 	}
 
 	public List<Long> getDataTraffic() {
+		Long max = 0l;
+		for (Long value : this.dataTraffic) {
+			if (max < value) {
+				max = value;
+			}
+		}
+		this.dataTraffic.clear();
+		this.dataTraffic.add(max);
 		return this.dataTraffic;
 	}
 	

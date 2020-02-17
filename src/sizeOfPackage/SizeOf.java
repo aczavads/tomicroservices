@@ -242,8 +242,7 @@ public class SizeOf {
 		if (isPrimitive(o)) {
 			sum = sizeOfPrimtive(o);
 		} else if (_class.isArray()) {
-			//sum = sizeOfArray(o, deepRecursion);
-			sum = 100l;
+			sum = sizeOfArray(o, deepRecursion);
 		} else {
 			Field[] fields = _class.getDeclaredFields();
 			Method[] methods = _class.getMethods();

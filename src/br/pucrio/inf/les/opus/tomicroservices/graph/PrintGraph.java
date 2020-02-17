@@ -12,7 +12,7 @@ import br.pucrio.inf.les.opus.tomicroservices.metrics.MethodGraph;
 import br.pucrio.inf.les.opus.tomicroservices.metrics.MethodNode;
 
 public class PrintGraph {
-	
+	/**
 	private void printDOT(String result, Graph<MethodNode, MethodEdgeValue> graph, File file) {
 		printDOT(result, graph);
 		if (file == null) return;
@@ -40,5 +40,6 @@ public class PrintGraph {
 		methodGraph = algoMST.run(methodGraph, numberOfMicroservices);
 		printDOT("Clustering Method Graph:", methodGraph.getGraph(), output);
 	}
+	**/
 
 }

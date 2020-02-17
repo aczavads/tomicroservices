@@ -41,9 +41,6 @@ public class FunctionalityPerMicroserviceArchitecture implements MetricPerMicros
 		double msa = lMicroservices.size();
 		double fmsa = functionalitiesPerMicroservice.size();
 		result = result + (fmsa/msa);
-		if (Double.isNaN(result)) {
-			System.out.println("NAN");
-		}
 		return convert(result);
 	}
 	

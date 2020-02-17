@@ -58,6 +58,7 @@ public class Microservice implements HasMetric<MetricPerMicroservice> {
 		String key = metric.getName();
 		this.metrics.put(key, metric);
 		double value = metric.getValue(this);
+		//System.out.println(value);
 		this.metricToValue.put(metric.getName(), new Double(value));
 	}
 	
@@ -106,6 +107,20 @@ public class Microservice implements HasMetric<MetricPerMicroservice> {
 	
 	public String toString() {
 		return this.verticies.toString();
+	}
+
+	public String print() {
+		String result = "";
+		for (Vertex vertex : this.verticies) {
+			String name = vertex.getName();
+			List<String> funcs = vertex.getFuncitionalities();
+			result += name + "!";
+			for (String fun : funcs) {
+				result += fun + " ";
+			}
+			result += "! \n";
+		}
+		return result;
 	}
 	
 }

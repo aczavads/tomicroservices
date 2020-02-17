@@ -15,20 +15,11 @@ public class MicroservicesMutation implements MutationOperator<MicroservicesSolu
 		this.randomGenerator = randomGenerator;
 	}
 	
-	public void check(MicroservicesSolution solution) {
-		List<Microservice> microservices = solution.getMicroservices();
-		int total = 0;
-		for (Microservice m : microservices) {
-			total += m.getVerticies().size();
-		}
-		assert(total == 5);
-	}
-	
 	@Override
 	//other possible implementation: move the first vertex;
 	public MicroservicesSolution execute(MicroservicesSolution solution) {
-		System.out.println("Mutation");
-		System.out.println(solution);
+		//System.out.println("Mutation");
+		//System.out.println(solution);
 		MicroservicesSolution mutated = solution; //solution.copy();
 		List<Microservice> microservices = mutated.getMicroservices();
 		int limit = microservices.size() - 1;
@@ -48,8 +39,7 @@ public class MicroservicesMutation implements MutationOperator<MicroservicesSolu
 		Vertex vertexFromMs2 = microservice2.getVerticies().get(randomGenerator.nextInt(0, limit));
 		microservice1.removeAndAddVerticies(vertexFromMs1, vertexFromMs2);
 		microservice2.removeAndAddVerticies(vertexFromMs2, vertexFromMs1);
-		check(mutated);
-		System.out.println(mutated);
+		//System.out.println(mutated);
 		return mutated;
 	}
 
