@@ -1,18 +1,10 @@
 package br.pucrio.inf.les.opus.tomicroservices.optimization;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
-import org.apache.commons.io.FileUtils;
 import org.uma.jmetal.algorithm.Algorithm;
 import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAII;
 import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAIIBuilder;
-import org.uma.jmetal.algorithm.multiobjective.nsgaiii.NSGAIII;
-import org.uma.jmetal.algorithm.multiobjective.nsgaiii.NSGAIIIBuilder;
 import org.uma.jmetal.operator.CrossoverOperator;
 import org.uma.jmetal.operator.MutationOperator;
 import org.uma.jmetal.operator.SelectionOperator;
@@ -22,11 +14,51 @@ import org.uma.jmetal.util.AlgorithmRunner;
 import org.uma.jmetal.util.pseudorandom.PseudoRandomGenerator;
 
 import br.pucrio.inf.les.opus.tomicroservices.graph.Graph;
-import br.pucrio.inf.les.opus.tomicroservices.metrics.Metric;
 import br.pucrio.inf.les.opus.tomicroservices.metrics.MetricPerMicroserviceArchitecture;
 
 public class NSGAIIRunner {
+	
+	public List<MicroservicesSolution> execute(Graph graph, List<MetricPerMicroserviceArchitecture> metrics,
+			List<MetricPerMicroserviceArchitecture> otherMetrics, int numberOfMicroservices,
+			PseudoRandomGenerator random, int maxPopulation, int maxIterations, 
+			Problem<MicroservicesSolution> problem) {
+	    Algorithm<List<MicroservicesSolution>> algorithm;
+	    MutationOperator<MicroservicesSolution> mutation;
+	    CrossoverOperator<MicroservicesSolution> crossover;
+	    SelectionOperator<List<MicroservicesSolution>, MicroservicesSolution> selection;
+	    
+	    mutation = new MicroservicesMutation(random);
+	    selection = new TournamentSelection<MicroservicesSolution>(4);
+	    crossover = new MicroservicesCrossover(2, 2, random, 0.9, 0.1);
+	    
+	    NSGAII<MicroservicesSolution> nsgaII = new NSGAIIBuilder<MicroservicesSolution>(problem, crossover, mutation, maxPopulation)
+	    		.setSelectionOperator(selection)
+	    		.setMaxEvaluations(maxPopulation * maxIterations)
+	    		.build();
+	    algorithm = (Algorithm<List<MicroservicesSolution>>) nsgaII;
+    	AlgorithmRunner algorithmRunner = new AlgorithmRunner.Executor(algorithm).execute();
+	    List<MicroservicesSolution> population = algorithm.getResult();
+	    return population;
+	}
+	
+	public List<MicroservicesSolution> execute(Graph graph, List<MetricPerMicroserviceArchitecture> metrics,
+			List<MetricPerMicroserviceArchitecture> otherMetrics, int numberOfMicroservices,
+			PseudoRandomGenerator random, int maxPopulation, int maxIterations) {
+		Problem<MicroservicesSolution> problem = new MicroservicesProblem(graph, metrics, numberOfMicroservices, random);
+		return execute(graph, metrics, otherMetrics, numberOfMicroservices,
+				random, maxPopulation, maxIterations, problem);
+	}
 
+	public List<MicroservicesSolution> executeWithInitialPopulation(Graph graph, List<MetricPerMicroserviceArchitecture> metrics, 
+			List<MetricPerMicroserviceArchitecture> otherMetrics, int numberOfMicroservices, PseudoRandomGenerator random,
+			int maxPopulation, int maxIterations, List<MicroservicesSolution> initialPopulation) {
+		Problem<MicroservicesSolution> problem = new MicroservicesProblem(graph, metrics, numberOfMicroservices, random, initialPopulation);
+		System.out.println("============NEW EXECUTION==================");
+		return execute(graph, metrics, otherMetrics, numberOfMicroservices,
+				random, maxPopulation, maxIterations, problem);
+	}
+	
+	/**
 	public void execute(Graph graph, List<MetricPerMicroserviceArchitecture> metrics, 
 			int numberOfMicroservices,
 			PseudoRandomGenerator random,
@@ -75,21 +107,10 @@ public class NSGAIIRunner {
 	    } catch (Throwable e) {
 	    	System.out.println(e.getStackTrace());
 	    }
-	    /**
-	    int solutionCount = 1;
-	    System.out.println("Print Solution");
-	    for (MicroservicesSolution solution : population) {
-	    	System.out.println("Solution " + solutionCount++);
-	    	for (MetricPerMicroserviceArchitecture metric : metrics) {
-	    		int index = metric.getObjectiveIndex();
-	    		System.out.println(metric.getName() + " : " + 
-	    				metric.printableValue(solution.getObjective(index)));
-	    		System.out.println(solution);
-	    	}
-	    }
-	    **/
 	}
+	**/
 	
+	/**
 	public MicroservicesSolution getBestSolution(MicroservicesSolution solution1, 
 			MicroservicesSolution solution2,
 			int indexMetric, int total, 
@@ -212,5 +233,6 @@ public class NSGAIIRunner {
 		}
 		return result;
 	}
+	**/
 	
 }

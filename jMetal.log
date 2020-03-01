@@ -2,8 +2,8 @@
 <!DOCTYPE log SYSTEM "logger.dtd">
 <log>
 <record>
-  <date>2020-02-04T23:19:06</date>
-  <millis>1580869146025</millis>
+  <date>2020-02-28T19:21:12</date>
+  <millis>1582928472820</millis>
   <sequence>0</sequence>
   <logger>org.uma.jmetal.util.JMetalLogger</logger>
   <level>INFO</level>
@@ -13,8 +13,8 @@
   <message>Loggers configured with null</message>
 </record>
 <record>
-  <date>2020-02-04T23:19:08</date>
-  <millis>1580869148490</millis>
+  <date>2020-02-28T19:21:13</date>
+  <millis>1582928473130</millis>
   <sequence>1</sequence>
   <logger>org.uma.jmetal.util.JMetalLogger</logger>
   <level>INFO</level>
@@ -24,8 +24,8 @@
   <message>rpssize: 1820</message>
 </record>
 <record>
-  <date>2020-02-04T23:56:17</date>
-  <millis>1580871377749</millis>
+  <date>2020-02-28T19:22:15</date>
+  <millis>1582928535372</millis>
   <sequence>2</sequence>
   <logger>org.uma.jmetal.util.JMetalLogger</logger>
   <level>INFO</level>
@@ -35,8 +35,8 @@
   <message>rpssize: 1820</message>
 </record>
 <record>
-  <date>2020-02-05T00:30:22</date>
-  <millis>1580873422371</millis>
+  <date>2020-02-28T19:23:13</date>
+  <millis>1582928593200</millis>
   <sequence>3</sequence>
   <logger>org.uma.jmetal.util.JMetalLogger</logger>
   <level>INFO</level>
@@ -46,8 +46,8 @@
   <message>rpssize: 1820</message>
 </record>
 <record>
-  <date>2020-02-05T01:04:51</date>
-  <millis>1580875491797</millis>
+  <date>2020-02-28T19:24:16</date>
+  <millis>1582928656083</millis>
   <sequence>4</sequence>
   <logger>org.uma.jmetal.util.JMetalLogger</logger>
   <level>INFO</level>
@@ -57,8 +57,8 @@
   <message>rpssize: 1820</message>
 </record>
 <record>
-  <date>2020-02-05T01:39:44</date>
-  <millis>1580877584682</millis>
+  <date>2020-02-28T19:25:13</date>
+  <millis>1582928713884</millis>
   <sequence>5</sequence>
   <logger>org.uma.jmetal.util.JMetalLogger</logger>
   <level>INFO</level>
@@ -68,53 +68,9 @@
   <message>rpssize: 1820</message>
 </record>
 <record>
-  <date>2020-02-05T02:15:43</date>
-  <millis>1580879743477</millis>
+  <date>2020-02-28T19:26:16</date>
+  <millis>1582928776417</millis>
   <sequence>6</sequence>
-  <logger>org.uma.jmetal.util.JMetalLogger</logger>
-  <level>INFO</level>
-  <class>org.uma.jmetal.algorithm.multiobjective.nsgaiii.NSGAIII</class>
-  <method>&lt;init&gt;</method>
-  <thread>1</thread>
-  <message>rpssize: 1820</message>
-</record>
-<record>
-  <date>2020-02-05T02:50:46</date>
-  <millis>1580881846359</millis>
-  <sequence>7</sequence>
-  <logger>org.uma.jmetal.util.JMetalLogger</logger>
-  <level>INFO</level>
-  <class>org.uma.jmetal.algorithm.multiobjective.nsgaiii.NSGAIII</class>
-  <method>&lt;init&gt;</method>
-  <thread>1</thread>
-  <message>rpssize: 1820</message>
-</record>
-<record>
-  <date>2020-02-05T03:26:21</date>
-  <millis>1580883981651</millis>
-  <sequence>8</sequence>
-  <logger>org.uma.jmetal.util.JMetalLogger</logger>
-  <level>INFO</level>
-  <class>org.uma.jmetal.algorithm.multiobjective.nsgaiii.NSGAIII</class>
-  <method>&lt;init&gt;</method>
-  <thread>1</thread>
-  <message>rpssize: 1820</message>
-</record>
-<record>
-  <date>2020-02-05T04:00:59</date>
-  <millis>1580886059314</millis>
-  <sequence>9</sequence>
-  <logger>org.uma.jmetal.util.JMetalLogger</logger>
-  <level>INFO</level>
-  <class>org.uma.jmetal.algorithm.multiobjective.nsgaiii.NSGAIII</class>
-  <method>&lt;init&gt;</method>
-  <thread>1</thread>
-  <message>rpssize: 1820</message>
-</record>
-<record>
-  <date>2020-02-05T04:36:48</date>
-  <millis>1580888208759</millis>
-  <sequence>10</sequence>
   <logger>org.uma.jmetal.util.JMetalLogger</logger>
   <level>INFO</level>
   <class>org.uma.jmetal.algorithm.multiobjective.nsgaiii.NSGAIII</class>

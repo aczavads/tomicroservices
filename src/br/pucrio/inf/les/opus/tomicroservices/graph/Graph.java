@@ -15,6 +15,10 @@ public class Graph {
 		this.vertices = new HashMap();
 	}
 	
+	public Map<String, Vertex> getNameToVertex() {
+		return this.vertices;
+	}
+	
 	public List<Vertex> getVerticies() {
 		Collection<Vertex> collection = this.vertices.values();
 		return new ArrayList<Vertex>(collection);

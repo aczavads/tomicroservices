@@ -20,7 +20,7 @@ public class MicroservicesMutation implements MutationOperator<MicroservicesSolu
 	public MicroservicesSolution execute(MicroservicesSolution solution) {
 		//System.out.println("Mutation");
 		//System.out.println(solution);
-		MicroservicesSolution mutated = solution; //solution.copy();
+		MicroservicesSolution mutated = solution.copy(); //solution.copy();
 		List<Microservice> microservices = mutated.getMicroservices();
 		int limit = microservices.size() - 1;
 		int index1 = randomGenerator.nextInt(0, limit);
@@ -33,13 +33,20 @@ public class MicroservicesMutation implements MutationOperator<MicroservicesSolu
 		}
 		Microservice microservice1 = microservices.get(index1);
 		Microservice microservice2 = microservices.get(index2);
-		limit = microservice1.getVerticies().size() - 1;
-		Vertex vertexFromMs1 = microservice1.getVerticies().get(randomGenerator.nextInt(0, limit));
-		limit = microservice2.getVerticies().size() - 1;
-		Vertex vertexFromMs2 = microservice2.getVerticies().get(randomGenerator.nextInt(0, limit));
+		limit = microservice1.getMutableVerticies().size() - 1;
+		if (limit < 1) {
+			System.out.println("Not mutated");
+			return mutated;
+		}
+		Vertex vertexFromMs1 = microservice1.getMutableVerticies().get(randomGenerator.nextInt(0, limit));
+		limit = microservice2.getMutableVerticies().size() - 1;
+		if (limit < 1) {
+			System.out.println("Not mutated");
+			return mutated;
+		}
+		Vertex vertexFromMs2 = microservice2.getMutableVerticies().get(randomGenerator.nextInt(0, limit));
 		microservice1.removeAndAddVerticies(vertexFromMs1, vertexFromMs2);
 		microservice2.removeAndAddVerticies(vertexFromMs2, vertexFromMs1);
-		//System.out.println(mutated);
 		return mutated;
 	}
 

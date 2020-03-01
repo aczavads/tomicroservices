@@ -57,6 +57,37 @@ public class MicroservicesCrossover implements CrossoverOperator<MicroservicesSo
 			source = copySource(source);
 			int sourceRandom = this.random.nextInt(0, source.size() - 1);
 			MicroservicesSolution solution = source.get(sourceRandom);
+			List<Microservice> lMicroservice = solution.getMicroservices();
+			int limit = lMicroservice.size() - 1;
+			int m1Index = this.random.nextInt(0, limit);
+			int m2Index = this.random.nextInt(0, limit);
+			if (m1Index == m2Index) {
+				++m2Index;
+				if (m2Index >= limit) {	
+					m2Index = 0;
+				}
+			}
+			Microservice m1 = lMicroservice.get(m1Index);
+			Microservice m2 = lMicroservice.get(m2Index);
+			List<Vertex> m1Verticies = m1.getMutableVerticies();
+			int totalVerticies = m1.getVerticies().size();
+			double mutableVerticies = totalVerticies * this.crossoverFraction;
+			if (m1Verticies.size() < mutableVerticies) {
+				mutableVerticies = m1Verticies.size();
+			}
+			List<Vertex> selectedVerticies = m1Verticies.subList(0, (int) mutableVerticies);
+			selectedVerticies = new ArrayList<Vertex>(selectedVerticies);
+			List<Vertex> selectedVerticiesCopy = new ArrayList<Vertex>(selectedVerticies);
+			m1.removeAndAddVerticies(selectedVerticies, null);
+			m2.removeAndAddVerticies(null, selectedVerticiesCopy);
+		}
+		return source;
+		/**
+		boolean doExecute = this.random.nextDouble(0.0f, 1.0f) <= this.crossoverProbability;
+		if (doExecute) {
+			source = copySource(source);
+			int sourceRandom = this.random.nextInt(0, source.size() - 1);
+			MicroservicesSolution solution = source.get(sourceRandom);
 			//System.out.println(solution.toString());
 			List<Microservice> lMicroservice = solution.getMicroservices();
 			int limit = lMicroservice.size() - 1;
@@ -79,6 +110,7 @@ public class MicroservicesCrossover implements CrossoverOperator<MicroservicesSo
 			//System.out.println(solution.toString());
 		}
 		return source;
+		**/
 	}
 
 	@Override

@@ -17,8 +17,6 @@ import br.pucrio.inf.les.opus.tomicroservices.metrics.MetricPerMicroserviceArchi
 
 public class MicroservicesProblem extends AbstractGenericProblem<MicroservicesSolution> 
 			implements HasMetric<MetricPerMicroserviceArchitecture> {
-
-//public class MicroservicesProblem implements DoubleSolution, HasMetric<MetricPerMicroserviceArchitecture>{
 	
 	private Map<String, MetricPerMicroserviceArchitecture> metrics;
 	
@@ -29,6 +27,12 @@ public class MicroservicesProblem extends AbstractGenericProblem<MicroservicesSo
 	private Graph graph;
 
 	private PseudoRandomGenerator random;
+	
+	private boolean givenInitialSolution;
+	
+	private List<MicroservicesSolution> initialSolution;
+	
+	private int numberOfcreatedSolutions;
 	
 	public MicroservicesProblem(Graph graph, List<MetricPerMicroserviceArchitecture> metrics, 
 			int numberOfMicroservices,
@@ -48,8 +52,17 @@ public class MicroservicesProblem extends AbstractGenericProblem<MicroservicesSo
 		this.setNumberOfConstraints(0);
 		this.setNumberOfVariables(0);
 		this.setName(this.getClass().getName());
+		this.givenInitialSolution = false;
+		this.numberOfcreatedSolutions = 0;
 	}
 	
+	public MicroservicesProblem(Graph graph, List<MetricPerMicroserviceArchitecture> metrics,
+			int numberOfMicroservices, PseudoRandomGenerator random, List<MicroservicesSolution> initialSolution) {
+		this(graph, metrics, numberOfMicroservices, random);
+		this.givenInitialSolution = true;
+		this.initialSolution = initialSolution;
+	}
+
 	public static int killed = 0;
 	private boolean isKilled(MicroservicesSolution microservicesSolution) {
 		List<Microservice> lMicroservice = microservicesSolution.getMicroservices();
@@ -62,8 +75,9 @@ public class MicroservicesProblem extends AbstractGenericProblem<MicroservicesSo
 			totalSize += size;
 		}
 		final double thresholdHigh = 0.16;
-		//final double thresholdLow = 0.1;
+		//final double thresholdHigh = 0.32;
 		final double thresholdLow = 0.03;
+		//final double thresholdLow = 0.06;
 		for (int i = 0; i < count; ++i) {
 			double reason = ((double)sizes[i]) / ((double)totalSize);
 			if (reason > thresholdHigh || reason < thresholdLow) {
@@ -72,6 +86,7 @@ public class MicroservicesProblem extends AbstractGenericProblem<MicroservicesSo
 				return true;
 			}
 		}
+		System.out.println("Not killed");
 		return false;
 	}
 	
@@ -97,6 +112,25 @@ public class MicroservicesProblem extends AbstractGenericProblem<MicroservicesSo
 	
 	@Override
 	public MicroservicesSolution createSolution() {
+		killed = 0;
+		++valueCreate;
+		if (this.givenInitialSolution) {
+			MicroservicesSolution solution;
+			if (this.numberOfcreatedSolutions >= this.initialSolution.size()) {
+				int index = random.nextInt(0, this.numberOfcreatedSolutions - 1);
+				solution = this.initialSolution.get(index);
+				MicroservicesMutation mutant = new MicroservicesMutation(this.random);
+					System.out.println("Mutant in createSolution");
+					solution = mutant.execute(solution);
+					return solution;
+				//throw new RuntimeException("Overflow in numberOfcreatedSolutions");
+			} else {
+				solution = this.initialSolution.get(this.numberOfcreatedSolutions);
+				++numberOfcreatedSolutions;
+				return solution;
+			}
+			//return solution;
+		}
 		//System.out.println("Create solution");
 		killed = 0;
 		++valueCreate;

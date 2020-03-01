@@ -15,6 +15,9 @@ public class Microservice implements HasMetric<MetricPerMicroservice> {
 	
 	private List<Vertex> verticies;
 	
+	//Not frozen verticies
+	private List<Vertex> mutableVerticies;
+	
 	private TreeSet<String> verticiesName;
 	
 	private Map<String, MetricPerMicroservice> metrics;
@@ -34,6 +37,8 @@ public class Microservice implements HasMetric<MetricPerMicroservice> {
 	private void commonConstructor(List<Vertex> verticies) {
 		this.verticies = new ArrayList<Vertex>();
 		this.verticies.addAll(verticies);
+		this.mutableVerticies = new ArrayList<Vertex>();
+		this.verticies.stream().filter(vertex -> !vertex.isFrozen()).forEach(this.mutableVerticies::add);
 		this.verticiesName = new TreeSet<String>();
 		for (Vertex vertex : verticies) {
 			this.verticiesName.add(vertex.getName());
@@ -52,6 +57,10 @@ public class Microservice implements HasMetric<MetricPerMicroservice> {
 	
 	public List<Vertex> getVerticies() {
 		return this.verticies;
+	}
+	
+	public List<Vertex> getMutableVerticies() {
+		return this.mutableVerticies;
 	}
 	
 	public void addOrUpdateMetric(MetricPerMicroservice metric) {
@@ -93,6 +102,9 @@ public class Microservice implements HasMetric<MetricPerMicroservice> {
 			if (!verticiesName.contains(vertex.getName())) {
 				this.verticiesName.add(vertex.getName());
 				this.verticies.add(vertex);
+				if (!vertex.isFrozen()) {
+					this.mutableVerticies.add(vertex);
+				}
 			}
 		}
 	}
@@ -103,6 +115,7 @@ public class Microservice implements HasMetric<MetricPerMicroservice> {
 			this.verticiesName.remove(vertex.getName());
 		}
 		this.verticies.removeAll(verticies);
+		this.mutableVerticies.removeAll(verticies);
 	}
 	
 	public String toString() {

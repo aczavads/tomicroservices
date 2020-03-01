@@ -4,15 +4,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.uma.jmetal.solution.DoubleSolution;
-import org.uma.jmetal.util.pseudorandom.RandomGenerator;
-//DoubleSolution
-//public class MicroservicesSolution extends DefaultDoubleSolution {
+
 public class MicroservicesSolution implements DoubleSolution {
 	
 	private List<Microservice> microservices;
-	private List<Double> objectives;
+	private Map<Integer, Double> objectives;
 		
 	public List<Microservice> getMicroservices() {
 		return this.microservices;
@@ -23,7 +22,7 @@ public class MicroservicesSolution implements DoubleSolution {
 	}
 	
 	private void commonConstructor(List<Microservice> microservices) {
-		this.objectives = new ArrayList<Double>();
+		this.objectives = new HashMap<Integer, Double>();
 		this.microservices = new ArrayList<Microservice>();
 		for (Microservice microservice : microservices) {
 			this.microservices.add(new Microservice(microservice));
@@ -51,11 +50,14 @@ public class MicroservicesSolution implements DoubleSolution {
 	
 	@Override
 	public void setObjective(int index, double value) {
+		this.objectives.put(index, value);
+		/**
 		if (index > (this.objectives.size() - 1)) {
-			this.objectives.add(index, value);
+			this.objectives.put(index, value);
 		} else {
 			this.objectives.set(index, value);
 		}
+		**/
 	}
 
 	@Override
@@ -65,11 +67,29 @@ public class MicroservicesSolution implements DoubleSolution {
 
 	@Override
 	public double[] getObjectives() {
+		/**
 		int size = this.objectives.size();
 		double[] result = new double[size];
 		int i = 0;
 		for (Double objective : this.objectives) {
 			result[i++] = objective;
+		}
+		return result;
+		**/
+		Set<Integer> keys = this.objectives.keySet();
+		int size = 0;
+		for (Integer key : keys) {
+			if (key > size) {
+				size = key;
+			}
+		}
+		++size;
+		if ((size) != keys.size()) {
+			throw new RuntimeException("Empty index in objectives array");
+		}
+		double[] result = new double[size];
+		for (Integer key : keys) {
+			result[key] = this.objectives.get(key);
 		}
 		return result;
 	}

@@ -13,12 +13,16 @@ public class Vertex {
 	private Set<String> funcitionalities;
 	private Map<String, Edge> outbound;
 	private Map<String, Edge> intbound;
+	private String frozenMotived;
+	private boolean frozen;
 
 	private void startCommonFields(String name) {
 		this.name = name;
 		this.outbound = new HashMap<String, Edge>();
 		this.intbound = new HashMap<String, Edge>();
 		this.funcitionalities = new HashSet<String>();
+		this.frozenMotived = "";
+		this.frozen = false;
 	}
 	
 	public Vertex(String name) {
@@ -107,4 +111,21 @@ public class Vertex {
 		return this.intbound;
 	}
 	
+	public boolean isFrozen() {
+		return this.frozen;
+	}
+	
+	public void setFrozen(String motive) {
+		this.frozen = true;
+		this.frozenMotived = motive;
+	}
+	
+	public void setNotFrozen() {
+		this.frozen = false;
+		this.frozenMotived = "";
+	}
+	
+	public String getFrozenMotive() {
+		return this.frozenMotived;
+	}
 }

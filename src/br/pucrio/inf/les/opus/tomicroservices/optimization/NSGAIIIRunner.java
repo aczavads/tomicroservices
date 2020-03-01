@@ -25,7 +25,61 @@ import br.pucrio.inf.les.opus.tomicroservices.metrics.MetricPerMicroserviceArchi
 
 public class NSGAIIIRunner extends AbstractAlgorithmRunner {
 	
-	public void execute(Graph graph, List<MetricPerMicroserviceArchitecture> metrics, 
+	private long time;
+	
+	public long timeExecuted() {
+		return this.time;
+	}
+	
+	private List<MicroservicesSolution> execute(Problem<MicroservicesSolution> problem,
+			int maxIterations,
+			int maxPopulation,
+			PseudoRandomGenerator random) {
+	    Algorithm<List<MicroservicesSolution>> algorithm;
+	    MutationOperator<MicroservicesSolution> mutation;
+	    CrossoverOperator<MicroservicesSolution> crossover;
+	    SelectionOperator<List<MicroservicesSolution>, MicroservicesSolution> selection;
+		
+	    mutation = new MicroservicesMutation(random);
+	    selection = new TournamentSelection<MicroservicesSolution>(4);
+	    crossover = new MicroservicesCrossover(2, 2, random, 0.9, 0.1);
+	    NSGAIII<MicroservicesSolution> nsgaIII =
+	            new NSGAIIIBuilder<>(problem)
+	                .setCrossoverOperator(crossover)
+	                .setMutationOperator(mutation)
+	                .setSelectionOperator(selection)
+	                .setMaxIterations(maxIterations)
+	                .build();
+	    nsgaIII.setMaxPopulationSize(maxPopulation);
+	    algorithm = (Algorithm<List<MicroservicesSolution>>) nsgaIII;
+	    long initTime = System.currentTimeMillis();
+		AlgorithmRunner algorithmRunner = new AlgorithmRunner.Executor(algorithm).execute();
+		this.time = System.currentTimeMillis() - initTime;
+		return algorithm.getResult();
+	}
+	
+	public List<MicroservicesSolution> execute(Graph graph, 
+			List<MetricPerMicroserviceArchitecture> metrics, 
+			int numberOfMicroservices,
+			PseudoRandomGenerator random,
+			int maxPopulation,
+			int maxIterations) {
+		Problem<MicroservicesSolution> problem = new MicroservicesProblem(graph, metrics, numberOfMicroservices, random);
+		return execute(problem, maxIterations, maxPopulation, random);
+	}
+	
+	public List<MicroservicesSolution> executeWithInitialPopulation(Graph graph, 
+			List<MetricPerMicroserviceArchitecture> metrics, 
+			int numberOfMicroservices,
+			PseudoRandomGenerator random,
+			int maxPopulation,
+			int maxIterations,
+			List<MicroservicesSolution> initialPopulation) {
+		Problem<MicroservicesSolution> problem = new MicroservicesProblem(graph, metrics, numberOfMicroservices, random, initialPopulation);
+		return execute(problem, maxIterations, maxPopulation, random);
+	}
+	
+	public void _execute(Graph graph, List<MetricPerMicroserviceArchitecture> metrics, 
 			int numberOfMicroservices,
 			PseudoRandomGenerator random,
 			File file) {
@@ -178,6 +232,5 @@ public class NSGAIIIRunner extends AbstractAlgorithmRunner {
 	    	result += solution.print() + "\n";
 		}
 		return result;
-	}
-	
+	}	
 }

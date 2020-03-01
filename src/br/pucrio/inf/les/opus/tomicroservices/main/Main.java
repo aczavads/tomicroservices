@@ -2,15 +2,35 @@ package br.pucrio.inf.les.opus.tomicroservices.main;
 
 import java.io.File;
 
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.DefaultParser;
-import org.apache.commons.cli.Options;
-import org.apache.commons.cli.ParseException;
-
-import br.pucrio.inf.les.opus.tomicroservices.graph.PrintGraph;
+import br.pucrio.inf.les.opus.tomicroservices.optimization.NSGAIIStarter;
 
 public class Main {
+	
+	public static void main(String[] args) {
+		final int executions = 1;
+		for (int i = 0; i < executions; ++i) {
+			NSGAIIStarter starter = new NSGAIIStarter(new File("/home/luizmatheus/TSE/NSGAII/execution" + i));
+			starter.start();
+		}
+		
+		
+		/**
+		final int executions = 1;
+		for (int i = 0; i < executions; ++i) {
+			NSGAIIIStarter starter = new NSGAIIIStarter(new File("/home/luizmatheus/TSE/execution" + i));
+			starter.start();
+		}
+		**/
+		///home/luizmatheus/TSE/selectedCase/solution32
+		/**
+		NSGAIIIStarter starter = new NSGAIIIStarterFromModifiedCase(
+				new File("/home/luizmatheus/TSE/usingFeatures/fiveMSA/secondExecution/case")
+				, new File("/home/luizmatheus/TSE/usingFeatures/fiveMSA/3Execution")
+				);
+		starter.start();
+		**/
+	}
+	
 	/**
 	public static void main(String[] args) {
 		Options options = new Options();
