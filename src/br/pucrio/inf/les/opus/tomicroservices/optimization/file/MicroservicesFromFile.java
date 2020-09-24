@@ -1,4 +1,4 @@
-package br.pucrio.inf.les.opus.tomicroservices.optimization;
+package br.pucrio.inf.les.opus.tomicroservices.optimization.file;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,6 +10,8 @@ import org.apache.commons.io.FileUtils;
 
 import br.pucrio.inf.les.opus.tomicroservices.graph.Graph;
 import br.pucrio.inf.les.opus.tomicroservices.graph.Vertex;
+import br.pucrio.inf.les.opus.tomicroservices.optimization.search.Microservice;
+import br.pucrio.inf.les.opus.tomicroservices.optimization.search.MicroservicesSolution;
 
 public class MicroservicesFromFile {
 	

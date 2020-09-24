@@ -13,6 +13,7 @@ import br.pucrio.inf.les.opus.tomicroservices.graph.Graph;
 import br.pucrio.inf.les.opus.tomicroservices.graph.Vertex;
 import br.pucrio.inf.les.opus.tomicroservices.metrics.MetricPerMicroservice;
 import br.pucrio.inf.les.opus.tomicroservices.metrics.overhead.OverheadMaxPerMicroservice;
+import br.pucrio.inf.les.opus.tomicroservices.optimization.search.Microservice;
 
 class MicroserviceTest {
 

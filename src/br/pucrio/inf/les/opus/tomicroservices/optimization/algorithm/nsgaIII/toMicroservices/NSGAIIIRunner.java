@@ -1,4 +1,4 @@
-package br.pucrio.inf.les.opus.tomicroservices.optimization;
+package br.pucrio.inf.les.opus.tomicroservices.optimization.algorithm.nsgaIII.toMicroservices;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,6 +22,10 @@ import org.uma.jmetal.util.pseudorandom.PseudoRandomGenerator;
 
 import br.pucrio.inf.les.opus.tomicroservices.graph.Graph;
 import br.pucrio.inf.les.opus.tomicroservices.metrics.MetricPerMicroserviceArchitecture;
+import br.pucrio.inf.les.opus.tomicroservices.optimization.search.MicroservicesCrossover;
+import br.pucrio.inf.les.opus.tomicroservices.optimization.search.MicroservicesMutation;
+import br.pucrio.inf.les.opus.tomicroservices.optimization.search.MicroservicesProblem;
+import br.pucrio.inf.les.opus.tomicroservices.optimization.search.MicroservicesSolution;
 
 public class NSGAIIIRunner extends AbstractAlgorithmRunner {
 	

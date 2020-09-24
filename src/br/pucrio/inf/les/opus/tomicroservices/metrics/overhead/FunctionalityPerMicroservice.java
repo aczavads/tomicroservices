@@ -8,7 +8,7 @@ import org.apache.commons.collections4.map.HashedMap;
 
 import br.pucrio.inf.les.opus.tomicroservices.graph.Vertex;
 import br.pucrio.inf.les.opus.tomicroservices.metrics.MetricPerMicroservice;
-import br.pucrio.inf.les.opus.tomicroservices.optimization.Microservice;
+import br.pucrio.inf.les.opus.tomicroservices.optimization.search.Microservice;
 
 public class FunctionalityPerMicroservice implements MetricPerMicroservice {
 

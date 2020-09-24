@@ -2,7 +2,7 @@ package br.pucrio.inf.les.opus.tomicroservices.metrics;
 
 import java.util.List;
 
-import br.pucrio.inf.les.opus.tomicroservices.optimization.MicroservicesSolution;
+import br.pucrio.inf.les.opus.tomicroservices.optimization.search.MicroservicesSolution;
 
 public interface MetricPerMicroserviceArchitecture extends Metric {
 

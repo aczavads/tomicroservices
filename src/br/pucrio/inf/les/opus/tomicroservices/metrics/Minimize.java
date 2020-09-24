@@ -7,8 +7,8 @@ public class Minimize implements ConvertValue {
 		if (value != 0.0) {
 			return 1.0/value;
 		} else {
-			//return Double.MAX_VALUE;
-			return 1000.0; //Think about MAX_VALUE;
+			return Double.MAX_VALUE;
+			//return 1000.0; //Think about MAX_VALUE;
 		}
 	}
 

@@ -15,7 +15,7 @@ import br.pucrio.inf.les.opus.tomicroservices.metrics.overhead.CouplingPerMicros
 import br.pucrio.inf.les.opus.tomicroservices.metrics.overhead.FunctionalityPerMicroserviceArchitecture;
 import br.pucrio.inf.les.opus.tomicroservices.metrics.overhead.OverheadMaxPerMicroserviceArchitecture;
 import br.pucrio.inf.les.opus.tomicroservices.metrics.overhead.ReusePerMicroserviceArchitecture;
-import br.pucrio.inf.les.opus.tomicroservices.optimization.NSGAIIIRunner;
+import br.pucrio.inf.les.opus.tomicroservices.optimization.algorithm.nsgaIII.toMicroservices.NSGAIIIRunner;
 
 public class Main2 {
 

@@ -1,4 +1,4 @@
-package br.pucrio.inf.les.opus.tomicroservices.optimization;
+package br.pucrio.inf.les.opus.tomicroservices.optimization.algorithm.nsgaIII.toMicroservices;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -17,6 +17,7 @@ import br.pucrio.inf.les.opus.tomicroservices.metrics.overhead.CouplingPerMicros
 import br.pucrio.inf.les.opus.tomicroservices.metrics.overhead.FunctionalityPerMicroserviceArchitecture;
 import br.pucrio.inf.les.opus.tomicroservices.metrics.overhead.OverheadMaxPerMicroserviceArchitecture;
 import br.pucrio.inf.les.opus.tomicroservices.metrics.overhead.ReusePerMicroserviceArchitecture;
+import br.pucrio.inf.les.opus.tomicroservices.optimization.ranking.EuclideanDistanceRanking;
 
 public class NSGAIIIStarter {
 
@@ -50,8 +51,8 @@ public class NSGAIIIStarter {
 		String rejectList = "/home/luizmatheus/tecgraf/csgrid/csgrid-server/agent/reject.list";
 		String dependency = "/home/luizmatheus/tecgraf/csbaseDependency";
 		String logDynamic = "/home/luizmatheus/tecgraf/csgrid/csgrid-server/agent/log";
-		String featuresGeneral = "/home/luizmatheus/tecgraf/csgrid/csgrid-server/agent/_feature.list";
-		//String featuresGeneral = "/home/luizmatheus/tecgraf/csgrid/csgrid-server/agent/feature.list";
+		//String featuresGeneral = "/home/luizmatheus/tecgraf/csgrid/csgrid-server/agent/_feature.list";
+		String featuresGeneral = "/home/luizmatheus/tecgraf/csgrid/csgrid-server/agent/feature.list";
 		
 		this.accepListFile = new File(acceptList);
 		this.rejectListFile = new File(rejectList);
@@ -66,17 +67,21 @@ public class NSGAIIIStarter {
 		System.out.println("Monitor");
 		this.monitor = new NSGAIIIMonitor(new EuclideanDistanceRanking());
 		
+		startMetrics();
+
+		//this.saveExecutions = new File("/home/luizmatheus/TSE/execution_first");
+	}
+	
+	protected void startMetrics() {
 		this.metrics = new ArrayList<MetricPerMicroserviceArchitecture>();
 		ConvertValue minimize = new Minimize();
 		this.metrics.add(new CouplingPerMicroserviceArchitecture());
 		this.metrics.add(new CohesionPerMicroserviceArchitecture(minimize));
 		this.metrics.add(new OverheadMaxPerMicroserviceArchitecture());
 		this.metrics.add(new FunctionalityPerMicroserviceArchitecture(minimize));
-		this.metrics.add(new ReusePerMicroserviceArchitecture("start", 1, minimize));
-
-		//this.saveExecutions = new File("/home/luizmatheus/TSE/execution_first");
+		this.metrics.add(new ReusePerMicroserviceArchitecture("start", 1, minimize));		
 	}
-	
+
 	public void start() {
 		setting();
 		try {

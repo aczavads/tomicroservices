@@ -15,6 +15,9 @@ import org.junit.jupiter.api.Test;
 
 import br.pucrio.inf.les.opus.tomicroservices.graph.Graph;
 import br.pucrio.inf.les.opus.tomicroservices.graph.Vertex;
+import br.pucrio.inf.les.opus.tomicroservices.optimization.file.MicroservicesFromFile;
+import br.pucrio.inf.les.opus.tomicroservices.optimization.search.Microservice;
+import br.pucrio.inf.les.opus.tomicroservices.optimization.search.MicroservicesSolution;
 
 public class MicroserviceFromFileTest {
 

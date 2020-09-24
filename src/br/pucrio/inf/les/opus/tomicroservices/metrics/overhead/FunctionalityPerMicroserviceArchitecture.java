@@ -7,8 +7,8 @@ import java.util.TreeSet;
 import br.pucrio.inf.les.opus.tomicroservices.metrics.ConvertValue;
 import br.pucrio.inf.les.opus.tomicroservices.metrics.MetricPerMicroservice;
 import br.pucrio.inf.les.opus.tomicroservices.metrics.MetricPerMicroserviceArchitecture;
-import br.pucrio.inf.les.opus.tomicroservices.optimization.Microservice;
-import br.pucrio.inf.les.opus.tomicroservices.optimization.MicroservicesSolution;
+import br.pucrio.inf.les.opus.tomicroservices.optimization.search.Microservice;
+import br.pucrio.inf.les.opus.tomicroservices.optimization.search.MicroservicesSolution;
 
 public class FunctionalityPerMicroserviceArchitecture implements MetricPerMicroserviceArchitecture {
 

@@ -1,4 +1,4 @@
-package br.pucrio.inf.les.opus.tomicroservices.optimization;
+package br.pucrio.inf.les.opus.tomicroservices.optimization.search;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -74,9 +74,10 @@ public class MicroservicesProblem extends AbstractGenericProblem<MicroservicesSo
 			sizes[count++] = size;
 			totalSize += size;
 		}
-		final double thresholdHigh = 0.16;
+		//final double thresholdHigh = 0.16;
+		final double thresholdHigh = 0.24;
 		//final double thresholdHigh = 0.32;
-		final double thresholdLow = 0.03;
+		final double thresholdLow = 0.04;
 		//final double thresholdLow = 0.06;
 		for (int i = 0; i < count; ++i) {
 			double reason = ((double)sizes[i]) / ((double)totalSize);
@@ -92,7 +93,9 @@ public class MicroservicesProblem extends AbstractGenericProblem<MicroservicesSo
 	
 	@Override
 	public void evaluate(MicroservicesSolution solution) {
-		boolean killed = isKilled(solution);
+		System.out.println("Evaluate");
+		//boolean killed = isKilled(solution);
+		boolean killed = false;
 		Set<String> keys = this.metrics.keySet();
 		int index;
 		for (String key : keys) {
@@ -110,6 +113,52 @@ public class MicroservicesProblem extends AbstractGenericProblem<MicroservicesSo
 
 	public static int valueCreate = 0;
 	
+	//TO RANDOMSEARCH
+	/**
+	@Override
+	public MicroservicesSolution createSolution() {
+		killed = 0;
+		++valueCreate;
+		List<Vertex> verticies = graph.getVerticies();
+		List<Microservice> lMicroservices = new ArrayList<Microservice>();
+		int total = verticies.size();
+		int jump = total / this.numberOfMicroservices;
+		//int current;
+		//int last = 0;
+		boolean indexFlag[] = new boolean[verticies.size()];
+		for (int i = 1; i <= this.numberOfMicroservices; ++i) {
+			//current =  (jump * i) + 1;
+			List<Vertex> currentVerticies = new ArrayList<Vertex>();
+			int addCases = 0;
+			for (int j = 0; j < jump; ++j) {
+				int index = random.nextInt(0, verticies.size() - 1);
+				if (indexFlag[index] == false) {
+					indexFlag[index] = true;
+					currentVerticies.add(verticies.get(index));
+					++addCases;
+				}
+			}
+			for (int j = 0; j < indexFlag.length; ++j) {
+				if (addCases < jump) {
+					currentVerticies.add(verticies.get(j));
+					++addCases;
+				} else {
+					break;
+				}
+			}
+			Microservice microservice = new Microservice(currentVerticies);
+			lMicroservices.add(microservice);
+			//last = current;
+		}
+		//System.out.println(lMicroservices.size());
+		MicroservicesSolution solution = new MicroservicesSolution(lMicroservices);
+		//System.out.println(solution);
+		//System.out.println(valueCreate);
+		return solution;
+	}
+	**/
+	
+	//NSGA
 	@Override
 	public MicroservicesSolution createSolution() {
 		killed = 0;

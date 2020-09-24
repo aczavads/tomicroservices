@@ -13,6 +13,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import br.pucrio.inf.les.opus.tomicroservices.graph.Vertex;
+import br.pucrio.inf.les.opus.tomicroservices.optimization.file.MicroservicesToFile;
+import br.pucrio.inf.les.opus.tomicroservices.optimization.search.Microservice;
 
 public class MicroserviceToFileTest {
 

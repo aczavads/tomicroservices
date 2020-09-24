@@ -19,7 +19,7 @@ import br.pucrio.inf.les.opus.tomicroservices.metrics.overhead.FunctionalityPerM
 import br.pucrio.inf.les.opus.tomicroservices.metrics.overhead.OverheadMaxPerMicroserviceArchitecture;
 import br.pucrio.inf.les.opus.tomicroservices.metrics.overhead.ReusePerMicroserviceArchitecture;
 import br.pucrio.inf.les.opus.tomicroservices.metrics.overhead.SizePerMicroserviceArchitecture;
-import br.pucrio.inf.les.opus.tomicroservices.optimization.NSGAIIIRunner;
+import br.pucrio.inf.les.opus.tomicroservices.optimization.algorithm.nsgaIII.toMicroservices.NSGAIIIRunner;
 
 public class Main {
 
@@ -31,6 +31,7 @@ public class Main {
 				"/home/luizmatheus/tecgraf/csgrid/csgrid-server/agent/log", 
 				"/home/luizmatheus/tecgraf/csgrid/csgrid-server/agent/feature");
 		**/
+		
 		String acceptList = "/home/luizmatheus/tecgraf/csgrid/csgrid-server/agent/accept.list";
 		String rejectList = "/home/luizmatheus/tecgraf/csgrid/csgrid-server/agent/reject.list";
 		String dependency = "/home/luizmatheus/tecgraf/csbaseDependency";

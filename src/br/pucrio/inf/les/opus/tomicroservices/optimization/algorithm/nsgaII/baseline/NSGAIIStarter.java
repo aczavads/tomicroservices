@@ -1,4 +1,4 @@
-package br.pucrio.inf.les.opus.tomicroservices.optimization;
+package br.pucrio.inf.les.opus.tomicroservices.optimization.algorithm.nsgaII.baseline;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -11,6 +11,8 @@ import br.pucrio.inf.les.opus.tomicroservices.metrics.overhead.CouplingPerMicros
 import br.pucrio.inf.les.opus.tomicroservices.metrics.overhead.FunctionalityPerMicroserviceArchitecture;
 import br.pucrio.inf.les.opus.tomicroservices.metrics.overhead.OverheadMaxPerMicroserviceArchitecture;
 import br.pucrio.inf.les.opus.tomicroservices.metrics.overhead.ReusePerMicroserviceArchitecture;
+import br.pucrio.inf.les.opus.tomicroservices.optimization.algorithm.Starter;
+import br.pucrio.inf.les.opus.tomicroservices.optimization.ranking.EuclideanDistanceRanking;
 
 public class NSGAIIStarter extends Starter {
 
@@ -42,21 +44,6 @@ public class NSGAIIStarter extends Starter {
 		this.otherMetrics.add(new OverheadMaxPerMicroserviceArchitecture());
 		this.otherMetrics.add(new FunctionalityPerMicroserviceArchitecture(minimize));
 		this.otherMetrics.add(new ReusePerMicroserviceArchitecture("start", 1, minimize));
-	}	
-	
-	/**
-	@Override
-	public void start() {
-		setting();
-		metrics();
-		try {
-			monitor.monitor(graph, metrics, numberOfMicroservices, random, maxPopulation, maxIterations, 
-					intervalToMonitor, saveExecutions);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
 	}
-	**/
 	
 }

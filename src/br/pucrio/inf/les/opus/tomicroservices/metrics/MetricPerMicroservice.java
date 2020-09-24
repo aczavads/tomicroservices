@@ -3,7 +3,7 @@ package br.pucrio.inf.les.opus.tomicroservices.metrics;
 import java.util.List;
 
 import br.pucrio.inf.les.opus.tomicroservices.graph.Vertex;
-import br.pucrio.inf.les.opus.tomicroservices.optimization.Microservice;
+import br.pucrio.inf.les.opus.tomicroservices.optimization.search.Microservice;
 
 public interface MetricPerMicroservice extends Metric {
 	

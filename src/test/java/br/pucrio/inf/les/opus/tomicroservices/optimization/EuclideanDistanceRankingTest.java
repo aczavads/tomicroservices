@@ -9,6 +9,9 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+import br.pucrio.inf.les.opus.tomicroservices.optimization.ranking.EuclideanDistanceRanking;
+import br.pucrio.inf.les.opus.tomicroservices.optimization.search.MicroservicesSolution;
+
 public class EuclideanDistanceRankingTest {
 
 	@Test

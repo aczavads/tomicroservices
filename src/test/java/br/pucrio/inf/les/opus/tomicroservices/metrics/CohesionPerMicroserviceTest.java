@@ -13,7 +13,7 @@ import br.pucrio.inf.les.opus.tomicroservices.graph.Edge;
 import br.pucrio.inf.les.opus.tomicroservices.graph.Graph;
 import br.pucrio.inf.les.opus.tomicroservices.graph.Vertex;
 import br.pucrio.inf.les.opus.tomicroservices.metrics.overhead.CohesionPerMicroservice;
-import br.pucrio.inf.les.opus.tomicroservices.optimization.Microservice;
+import br.pucrio.inf.les.opus.tomicroservices.optimization.search.Microservice;
 
 public class CohesionPerMicroserviceTest {
 

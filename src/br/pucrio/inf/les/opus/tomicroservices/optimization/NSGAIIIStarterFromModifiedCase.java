@@ -3,6 +3,10 @@ package br.pucrio.inf.les.opus.tomicroservices.optimization;
 import java.io.File;
 import java.util.List;
 
+import br.pucrio.inf.les.opus.tomicroservices.optimization.algorithm.nsgaIII.toMicroservices.NSGAIIIStarter;
+import br.pucrio.inf.les.opus.tomicroservices.optimization.file.MicroservicesFromFile;
+import br.pucrio.inf.les.opus.tomicroservices.optimization.search.MicroservicesSolution;
+
 public class NSGAIIIStarterFromModifiedCase extends NSGAIIIStarter {
 
 	private File microservicesFolder;

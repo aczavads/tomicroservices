@@ -1,4 +1,4 @@
-package br.pucrio.inf.les.opus.tomicroservices.optimization;
+package br.pucrio.inf.les.opus.tomicroservices.optimization.algorithm.nsgaIII.toMicroservices;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,11 +10,34 @@ import org.uma.jmetal.util.pseudorandom.PseudoRandomGenerator;
 
 import br.pucrio.inf.les.opus.tomicroservices.graph.Graph;
 import br.pucrio.inf.les.opus.tomicroservices.metrics.MetricPerMicroserviceArchitecture;
+import br.pucrio.inf.les.opus.tomicroservices.optimization.algorithm.Monitor;
+import br.pucrio.inf.les.opus.tomicroservices.optimization.file.MicroservicesToFile;
+import br.pucrio.inf.les.opus.tomicroservices.optimization.ranking.RankingSolution;
+import br.pucrio.inf.les.opus.tomicroservices.optimization.search.MicroservicesSolution;
 
-public class NSGAIIIMonitor {
+public class NSGAIIIMonitor extends Monitor{
 	
 	private List<RankingSolution<List<MicroservicesSolution>>> ranking;
+		
+	public NSGAIIIMonitor(List<RankingSolution<List<MicroservicesSolution>>> ranking) {
+		super(ranking);
+	}
 	
+	public NSGAIIIMonitor(RankingSolution<List<MicroservicesSolution>> ranking) {
+		super(ranking);
+	}
+	
+	public NSGAIIIMonitor(List<RankingSolution<List<MicroservicesSolution>>> ranking, 
+			List<MetricPerMicroserviceArchitecture> otherMetrics) {
+		super(ranking, otherMetrics);
+	}
+	
+	public NSGAIIIMonitor(RankingSolution<List<MicroservicesSolution>> ranking,
+			List<MetricPerMicroserviceArchitecture> otherMetrics) {
+		super(ranking, otherMetrics);
+	}
+	
+	/**
 	public NSGAIIIMonitor(RankingSolution<List<MicroservicesSolution>> ranking) {
 		this.ranking = new ArrayList<RankingSolution<List<MicroservicesSolution>>>();
 		this.ranking.add(ranking);
@@ -45,7 +68,8 @@ public class NSGAIIIMonitor {
 		toFile.writeAllRankingInAFile(solution, this.ranking, "ranking");
 		computeBestRanking(solution, file);
 	}
-
+	**/
+	
 	public void monitor(Graph graph, List<MetricPerMicroserviceArchitecture> metrics, 
 			int numberOfMicroservices, PseudoRandomGenerator random, int maxPopulation, 
 			int maxIterations, int intervalToMonitor, File saveExecutions) throws Exception {
@@ -82,12 +106,20 @@ public class NSGAIIIMonitor {
 			List<MicroservicesSolution> solution, int steps, NSGAIIIRunner nsgaIIIRunner) {
 		System.out.println("First");
 		final int firstStep = 0;
-		save(solution, firstStep, metrics, saveExecutions);		
+		List<MetricPerMicroserviceArchitecture> allMetrics = new ArrayList<MetricPerMicroserviceArchitecture>();
+		allMetrics.addAll(metrics);
+		if (this.additionalMetrics != null && !this.additionalMetrics.isEmpty()) {
+			allMetrics.addAll(this.additionalMetrics);
+		}
+		save(solution, firstStep, allMetrics, saveExecutions);		
+		//save(solution, firstStep, metrics, saveExecutions);		
 		for (int step = 1; step < steps; ++step) {
 			System.out.println("Step: " + step);
 			solution = nsgaIIIRunner.executeWithInitialPopulation(graph, metrics, numberOfMicroservices, random, 
 					maxPopulation, intervalToMonitor, initialPopulation);
-			save(solution, step, metrics, saveExecutions);					
+			save(solution, step, allMetrics, saveExecutions);
+			//save(solution, step, metrics, saveExecutions);					
 		}
 	}
+	
 }

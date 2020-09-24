@@ -1,4 +1,4 @@
-package br.pucrio.inf.les.opus.tomicroservices.optimization;
+package br.pucrio.inf.les.opus.tomicroservices.optimization.algorithm;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,10 +10,18 @@ import org.uma.jmetal.util.pseudorandom.PseudoRandomGenerator;
 
 import br.pucrio.inf.les.opus.tomicroservices.graph.Graph;
 import br.pucrio.inf.les.opus.tomicroservices.metrics.MetricPerMicroserviceArchitecture;
+import br.pucrio.inf.les.opus.tomicroservices.optimization.file.MicroservicesToFile;
+import br.pucrio.inf.les.opus.tomicroservices.optimization.ranking.RankingSolution;
+import br.pucrio.inf.les.opus.tomicroservices.optimization.search.MicroservicesSolution;
 
 public abstract class Monitor {
 
-private List<RankingSolution<List<MicroservicesSolution>>> ranking;
+	private List<RankingSolution<List<MicroservicesSolution>>> ranking;
+	
+	/**
+	 * Additional metrics (not used in the search-process) to be save within the result.
+	 */
+	protected List<MetricPerMicroserviceArchitecture> additionalMetrics;
 	
 	public Monitor(RankingSolution<List<MicroservicesSolution>> ranking) {
 		this.ranking = new ArrayList<RankingSolution<List<MicroservicesSolution>>>();
@@ -22,6 +30,18 @@ private List<RankingSolution<List<MicroservicesSolution>>> ranking;
 
 	public Monitor(List<RankingSolution<List<MicroservicesSolution>>> ranking) {
 		this.ranking = ranking;
+	}
+	
+	public Monitor(List<RankingSolution<List<MicroservicesSolution>>> ranking, 
+			List<MetricPerMicroserviceArchitecture> otherMetrics) {
+		this(ranking);
+		this.additionalMetrics = otherMetrics;
+	}
+	
+	public Monitor(RankingSolution<List<MicroservicesSolution>> ranking,
+			List<MetricPerMicroserviceArchitecture> otherMetrics) {
+		this(ranking);
+		this.additionalMetrics = otherMetrics;
 	}
 	
 	private void computeBestRanking(List<MicroservicesSolution> solution, File saveRanking) {

@@ -1,4 +1,4 @@
-package br.pucrio.inf.les.opus.tomicroservices.optimization;
+package br.pucrio.inf.les.opus.tomicroservices.optimization.algorithm;
 
 import java.io.File;
 import java.util.List;
@@ -9,6 +9,7 @@ import org.uma.jmetal.util.pseudorandom.impl.JavaRandomGenerator;
 import br.pucrio.inf.les.opus.tomicroservices.analysis.dynamic.DynamicLogAnalyzer;
 import br.pucrio.inf.les.opus.tomicroservices.graph.Graph;
 import br.pucrio.inf.les.opus.tomicroservices.metrics.MetricPerMicroserviceArchitecture;
+import br.pucrio.inf.les.opus.tomicroservices.optimization.algorithm.nsgaIII.toMicroservices.NSGAIIIMonitor;
 
 public abstract class Starter {
 
@@ -32,7 +33,6 @@ public abstract class Starter {
 	protected final int maxIterations = 10000;
 	protected final int intervalToMonitor = 200;
 	protected File saveExecutions;
-	
 
 	public Starter(File saveExecutions) {
 		this.saveExecutions = saveExecutions;
@@ -43,8 +43,8 @@ public abstract class Starter {
 		String rejectList = "/home/luizmatheus/tecgraf/csgrid/csgrid-server/agent/reject.list";
 		String dependency = "/home/luizmatheus/tecgraf/csbaseDependency";
 		String logDynamic = "/home/luizmatheus/tecgraf/csgrid/csgrid-server/agent/log";
-		String featuresGeneral = "/home/luizmatheus/tecgraf/csgrid/csgrid-server/agent/_feature.list";
-		//String featuresGeneral = "/home/luizmatheus/tecgraf/csgrid/csgrid-server/agent/feature.list";
+		//String featuresGeneral = "/home/luizmatheus/tecgraf/csgrid/csgrid-server/agent/_feature.list";
+		String featuresGeneral = "/home/luizmatheus/tecgraf/csgrid/csgrid-server/agent/feature.list";
 		
 		this.accepListFile = new File(acceptList);
 		this.rejectListFile = new File(rejectList);
