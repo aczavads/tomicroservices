@@ -56,7 +56,8 @@ public class DynamicLogAnalyzer {
 			return false;
 		}
 		String threadName = classMethodSizeOfAndDeep.get("Thread");
-		if (!threadName.contains("Grizzly-worker")) {
+		//if (!threadName.contains("Grizzly-worker")) {
+		if (!threadName.contains("main")) {
 			return false;
 		}
 		final int elementSize = 5;
@@ -214,7 +215,11 @@ public class DynamicLogAnalyzer {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
-		} 
+		} catch (Exception e) {
+			System.out.println("Opa!");
+			e.printStackTrace();
+		}
+		System.out.println(">>> end analyze");
 	}
 	
 }

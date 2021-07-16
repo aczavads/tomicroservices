@@ -32,12 +32,19 @@ public class Main {
 				"/home/luizmatheus/tecgraf/csgrid/csgrid-server/agent/feature");
 		**/
 		
-		String acceptList = "/home/luizmatheus/tecgraf/csgrid/csgrid-server/agent/accept.list";
-		String rejectList = "/home/luizmatheus/tecgraf/csgrid/csgrid-server/agent/reject.list";
-		String dependency = "/home/luizmatheus/tecgraf/csbaseDependency";
-		String logDynamic = "/home/luizmatheus/tecgraf/csgrid/csgrid-server/agent/log";
-		String featuresGeneral = "/home/luizmatheus/tecgraf/csgrid/csgrid-server/agent/_feature.list";
+//		String acceptList = "/home/luizmatheus/tecgraf/csgrid/csgrid-server/agent/accept.list";
+//		String rejectList = "/home/luizmatheus/tecgraf/csgrid/csgrid-server/agent/reject.list";
+//		String dependency = "/home/luizmatheus/tecgraf/csbaseDependency";
+//		String logDynamic = "/home/luizmatheus/tecgraf/csgrid/csgrid-server/agent/log";
+//		String featuresGeneral = "/home/luizmatheus/tecgraf/csgrid/csgrid-server/agent/_feature.list";
 
+		String acceptList = "/home/arthur/Documents/doutorado/tomsc/accept.list";
+		String rejectList = "/home/arthur/Documents/doutorado/tomsc/reject.list";
+		String dependency = "/home/arthur/Documents/doutorado/tomsc/csbaseDependency";
+		String logDynamic = "/home/arthur/Documents/doutorado/tomsc/log";
+		String featuresGeneral = "/home/arthur/Documents/doutorado/tomsc/feature";
+
+		
 		File accepListFile = new File(acceptList);
 		File rejectListFile = new File(rejectList);
 		File staticFile = new File(dependency);
@@ -48,7 +55,8 @@ public class Main {
 		ClassNamePattern reject = new ClassNamePattern(rejectListFile, false);
 		Graph graph = new Graph();
 		ReadDependencyFinderFile dependencyFinder = new ReadDependencyFinderFile();
-		//dependencyFinder.insertInGraphFromFile(staticFile, graph, pattern, reject);
+		//remover este comentário para executar!
+		dependencyFinder.insertInGraphFromFile(staticFile, graph, pattern, reject);
 		System.out.println(graph.getVerticesSize());
 		System.out.println("Dynamic");
 		DynamicLogAnalyzer dynamic = new DynamicLogAnalyzer();
@@ -56,7 +64,7 @@ public class Main {
 		System.out.println(graph.getVerticesSize());
 		System.out.println("NSGA-III");
 		
-		/**
+	
 		List<MetricPerMicroserviceArchitecture> metrics;
 		metrics = new ArrayList<MetricPerMicroserviceArchitecture>();
 		ConvertValue minimize = new Minimize();
@@ -70,33 +78,30 @@ public class Main {
 		metrics.add(new CohesionPerMicroserviceArchitecture(minimize));
 		//metrics.add(new SizePerMicroserviceArchitecture());
 		//int numberOfMicroservices = 13;
-		int numberOfMicroservices = 10;
+		int numberOfMicroservices = 2;
 		PseudoRandomGenerator random = new JavaRandomGenerator();
 		
-		//NSGAIIIRunner runner = new NSGAIIIRunner();
-**/
-		/**
-		br.pucrio.inf.les.opus.tomicroservices.optimization.NSGAIIRunner runner 
-			= new br.pucrio.inf.les.opus.tomicroservices.optimization.NSGAIIRunner();
+		NSGAIIIRunner runner = new NSGAIIIRunner();
+
+		//br.pucrio.inf.les.opus.tomicroservices.optimization.NSGAIIRunner runner 
+		//	= new br.pucrio.inf.les.opus.tomicroservices.optimization.NSGAIIRunner();
 		List<MetricPerMicroserviceArchitecture> otherMetrics = new ArrayList<MetricPerMicroserviceArchitecture>();
 		otherMetrics.add(new OverheadMaxPerMicroserviceArchitecture());
 		otherMetrics.add(new FunctionalityPerMicroserviceArchitecture(minimize));
 		otherMetrics.add(new ReusePerMicroserviceArchitecture("start", 1, minimize));
 		
 		final int executions = 7;
-		**/
-		/**
 		for (int i = 0; i < executions; ++i) {
-			File file = new File("/home/luizmatheus/result" + i);
-			/**
-			runner.execute(graph, metrics, 
+			File file = new File("/home/arthur/Documents/doutorado/tomsc/result" + i);
+			
+			runner._execute(graph, metrics, 
 					numberOfMicroservices,
 					random, file);
-			**/
+			
 			//runner.execute(graph, metrics, 
 			//		numberOfMicroservices,
 			//		random, file, otherMetrics);
-		//}
+		}
 
 	}
 	

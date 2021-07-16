@@ -191,6 +191,8 @@ public class MicroservicesProblem extends AbstractGenericProblem<MicroservicesSo
 		int last = 0;
 		for (int i = 1; i <= this.numberOfMicroservices; ++i) {
 			current =  (jump * i) + 1;
+			//acz
+			current = current <= verticies.size() ? current : verticies.size();  
 			Microservice microservice = new Microservice(verticies.subList(last, current));
 			lMicroservices.add(microservice);
 			//System.out.println(microservice);
