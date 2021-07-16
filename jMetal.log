@@ -2,8 +2,8 @@
 <!DOCTYPE log SYSTEM "logger.dtd">
 <log>
 <record>
-  <date>2021-07-15T21:36:14</date>
-  <millis>1626395774136</millis>
+  <date>2021-07-15T22:43:49</date>
+  <millis>1626399829650</millis>
   <sequence>0</sequence>
   <logger>org.uma.jmetal.util.JMetalLogger</logger>
   <level>INFO</level>
@@ -13,8 +13,8 @@
   <message>Loggers configured with null</message>
 </record>
 <record>
-  <date>2021-07-15T21:36:14</date>
-  <millis>1626395774190</millis>
+  <date>2021-07-15T22:43:49</date>
+  <millis>1626399829713</millis>
   <sequence>1</sequence>
   <logger>org.uma.jmetal.util.JMetalLogger</logger>
   <level>INFO</level>
@@ -24,8 +24,8 @@
   <message>rpssize: 13</message>
 </record>
 <record>
-  <date>2021-07-15T21:36:20</date>
-  <millis>1626395780795</millis>
+  <date>2021-07-15T22:43:55</date>
+  <millis>1626399835626</millis>
   <sequence>2</sequence>
   <logger>org.uma.jmetal.util.JMetalLogger</logger>
   <level>INFO</level>
@@ -35,8 +35,8 @@
   <message>rpssize: 13</message>
 </record>
 <record>
-  <date>2021-07-15T21:36:27</date>
-  <millis>1626395787709</millis>
+  <date>2021-07-15T22:44:00</date>
+  <millis>1626399840825</millis>
   <sequence>3</sequence>
   <logger>org.uma.jmetal.util.JMetalLogger</logger>
   <level>INFO</level>
@@ -46,8 +46,8 @@
   <message>rpssize: 13</message>
 </record>
 <record>
-  <date>2021-07-15T21:36:33</date>
-  <millis>1626395793595</millis>
+  <date>2021-07-15T22:44:06</date>
+  <millis>1626399846017</millis>
   <sequence>4</sequence>
   <logger>org.uma.jmetal.util.JMetalLogger</logger>
   <level>INFO</level>
@@ -57,8 +57,8 @@
   <message>rpssize: 13</message>
 </record>
 <record>
-  <date>2021-07-15T21:36:39</date>
-  <millis>1626395799033</millis>
+  <date>2021-07-15T22:44:11</date>
+  <millis>1626399851199</millis>
   <sequence>5</sequence>
   <logger>org.uma.jmetal.util.JMetalLogger</logger>
   <level>INFO</level>
@@ -68,8 +68,8 @@
   <message>rpssize: 13</message>
 </record>
 <record>
-  <date>2021-07-15T21:36:44</date>
-  <millis>1626395804316</millis>
+  <date>2021-07-15T22:44:16</date>
+  <millis>1626399856327</millis>
   <sequence>6</sequence>
   <logger>org.uma.jmetal.util.JMetalLogger</logger>
   <level>INFO</level>
@@ -79,8 +79,8 @@
   <message>rpssize: 13</message>
 </record>
 <record>
-  <date>2021-07-15T21:36:49</date>
-  <millis>1626395809682</millis>
+  <date>2021-07-15T22:44:21</date>
+  <millis>1626399861460</millis>
   <sequence>7</sequence>
   <logger>org.uma.jmetal.util.JMetalLogger</logger>
   <level>INFO</level>
