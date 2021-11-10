@@ -97,15 +97,15 @@ public class NSGAIIIRunner extends AbstractAlgorithmRunner {
 	    mutation = new MicroservicesMutation(random);
 	    selection = new TournamentSelection<MicroservicesSolution>(4);
 	    //crossover = new MicroservicesCrossover(2, 2, random, 0.9, 0.5);
-	    crossover = new MicroservicesCrossover(2, 2, random, 0.9, 0.1);
+	    crossover = new MicroservicesCrossover(2, 2, random, 0.4, 0.4);
 	    NSGAIII<MicroservicesSolution> nsgaIII =
 	            new NSGAIIIBuilder<>(problem)
 	                .setCrossoverOperator(crossover)
 	                .setMutationOperator(mutation)
 	                .setSelectionOperator(selection)
-	                .setMaxIterations(10000)
+	                .setMaxIterations(2_000)
 	                .build();
-	    nsgaIII.setMaxPopulationSize(50);
+	    nsgaIII.setMaxPopulationSize(5);
 	    algorithm = (Algorithm<List<MicroservicesSolution>>) nsgaIII;
 	    try {
 	    	long initTime = System.currentTimeMillis();

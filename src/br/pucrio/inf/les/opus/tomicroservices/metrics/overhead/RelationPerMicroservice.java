@@ -43,7 +43,7 @@ public abstract class RelationPerMicroservice implements MetricPerMicroservice {
 	protected double metricPerVertex(Vertex vertex, Map<String, Boolean> nameToBoolean) {
 		double result = 0l;
 		result += computeOutbound(vertex, nameToBoolean);
-		result += computeInbound(vertex, nameToBoolean);
+		//result += computeInbound(vertex, nameToBoolean);
 		return result;
 	}
 

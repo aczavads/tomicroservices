@@ -93,7 +93,7 @@ public class MicroservicesProblem extends AbstractGenericProblem<MicroservicesSo
 	
 	@Override
 	public void evaluate(MicroservicesSolution solution) {
-		System.out.println("Evaluate");
+		//System.out.println("Evaluate");
 		//boolean killed = isKilled(solution);
 		boolean killed = false;
 		Set<String> keys = this.metrics.keySet();

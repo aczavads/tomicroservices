@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.swing.JOptionPane;
+
 import org.uma.jmetal.problem.impl.AbstractGenericProblem;
 import org.uma.jmetal.util.pseudorandom.PseudoRandomGenerator;
 
@@ -75,7 +77,8 @@ public class MicroservicesProblem extends AbstractGenericProblem<MicroservicesSo
 			totalSize += size;
 		}
 		//final double thresholdHigh = 0.16;
-		final double thresholdHigh = 0.24;
+		//final double thresholdHigh = 0.24;
+		final double thresholdHigh = 1.00;
 		//final double thresholdHigh = 0.32;
 		final double thresholdLow = 0.04;
 		//final double thresholdLow = 0.06;
@@ -93,7 +96,7 @@ public class MicroservicesProblem extends AbstractGenericProblem<MicroservicesSo
 	
 	@Override
 	public void evaluate(MicroservicesSolution solution) {
-		System.out.println("Evaluate");
+		//System.out.println("Evaluate");
 		//boolean killed = isKilled(solution);
 		boolean killed = false;
 		Set<String> keys = this.metrics.keySet();
@@ -164,6 +167,7 @@ public class MicroservicesProblem extends AbstractGenericProblem<MicroservicesSo
 		killed = 0;
 		++valueCreate;
 		if (this.givenInitialSolution) {
+			JOptionPane.showMessageDialog(null, "Opa!");
 			MicroservicesSolution solution;
 			if (this.numberOfcreatedSolutions >= this.initialSolution.size()) {
 				int index = random.nextInt(0, this.numberOfcreatedSolutions - 1);
@@ -186,6 +190,7 @@ public class MicroservicesProblem extends AbstractGenericProblem<MicroservicesSo
 		List<Vertex> verticies = graph.getVerticies();
 		List<Microservice> lMicroservices = new ArrayList<Microservice>();
 		int total = verticies.size();
+		//aqui está perdendo 1 método (quando tem resto).
 		int jump = total / this.numberOfMicroservices;
 		int current;
 		int last = 0;

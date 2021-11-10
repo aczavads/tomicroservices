@@ -71,7 +71,7 @@ public class Main {
 		
 		//REMOVE IT TO NSGA-II
 		//metrics.add(new OverheadMaxPerMicroserviceArchitecture());
-		//metrics.add(new FunctionalityPerMicroserviceArchitecture(minimize));
+		metrics.add(new FunctionalityPerMicroserviceArchitecture(minimize));
 		//metrics.add(new ReusePerMicroserviceArchitecture("start", 1, minimize));
 		
 		metrics.add(new CouplingPerMicroserviceArchitecture());
@@ -86,10 +86,11 @@ public class Main {
 		//br.pucrio.inf.les.opus.tomicroservices.optimization.NSGAIIRunner runner 
 		//	= new br.pucrio.inf.les.opus.tomicroservices.optimization.NSGAIIRunner();
 		List<MetricPerMicroserviceArchitecture> otherMetrics = new ArrayList<MetricPerMicroserviceArchitecture>();
-		otherMetrics.add(new OverheadMaxPerMicroserviceArchitecture());
-		otherMetrics.add(new FunctionalityPerMicroserviceArchitecture(minimize));
-		otherMetrics.add(new ReusePerMicroserviceArchitecture("start", 1, minimize));
-		
+		//otherMetrics.add(new OverheadMaxPerMicroserviceArchitecture());
+		//otherMetrics.add(new FunctionalityPerMicroserviceArchitecture(minimize));
+		//otherMetrics.add(new ReusePerMicroserviceArchitecture("start", 1, minimize));
+
+		metrics.addAll(otherMetrics);
 		final int executions = 7;
 		for (int i = 0; i < executions; ++i) {
 			File file = new File("/home/arthur/Documents/doutorado/tomsc/result" + i);

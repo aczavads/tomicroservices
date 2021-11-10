@@ -1,6 +1,8 @@
 package br.pucrio.inf.les.opus.tomicroservices.optimization.search;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.uma.jmetal.operator.CrossoverOperator;
@@ -75,11 +77,15 @@ public class MicroservicesCrossover implements CrossoverOperator<MicroservicesSo
 			if (m1Verticies.size() < mutableVerticies) {
 				mutableVerticies = m1Verticies.size();
 			}
+			//System.out.println((int) mutableVerticies);
 			List<Vertex> selectedVerticies = m1Verticies.subList(0, (int) mutableVerticies);
 			selectedVerticies = new ArrayList<Vertex>(selectedVerticies);
 			List<Vertex> selectedVerticiesCopy = new ArrayList<Vertex>(selectedVerticies);
 			m1.removeAndAddVerticies(selectedVerticies, null);
 			m2.removeAndAddVerticies(null, selectedVerticiesCopy);
+			
+			//garantir que o número total de métodos seja o mesmo.
+			//assert solution.getMicroservices().
 		}
 		return source;
 		/**
