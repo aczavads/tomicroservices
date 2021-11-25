@@ -79,6 +79,8 @@ public class Main {
 		//metrics.add(new SizePerMicroserviceArchitecture());
 		//int numberOfMicroservices = 13;
 		int numberOfMicroservices = 2;
+		double crossoverProbability = 0.4; 
+		double crossoverFraction = 0.4;
 		PseudoRandomGenerator random = new JavaRandomGenerator();
 		
 		NSGAIIIRunner runner = new NSGAIIIRunner();
@@ -97,6 +99,8 @@ public class Main {
 			
 			runner._execute(graph, metrics, 
 					numberOfMicroservices,
+					crossoverProbability,
+					crossoverFraction,
 					random, file);
 			
 			//runner.execute(graph, metrics, 

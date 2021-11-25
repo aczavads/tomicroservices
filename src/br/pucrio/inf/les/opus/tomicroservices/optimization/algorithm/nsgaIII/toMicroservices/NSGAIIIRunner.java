@@ -85,6 +85,8 @@ public class NSGAIIIRunner extends AbstractAlgorithmRunner {
 	
 	public void _execute(Graph graph, List<MetricPerMicroserviceArchitecture> metrics, 
 			int numberOfMicroservices,
+			double crossoverProbability, 
+			double crossoverFraction,
 			PseudoRandomGenerator random,
 			File file) {
 		Problem<MicroservicesSolution> problem;
@@ -97,7 +99,8 @@ public class NSGAIIIRunner extends AbstractAlgorithmRunner {
 	    mutation = new MicroservicesMutation(random);
 	    selection = new TournamentSelection<MicroservicesSolution>(4);
 	    //crossover = new MicroservicesCrossover(2, 2, random, 0.9, 0.5);
-	    crossover = new MicroservicesCrossover(2, 2, random, 0.4, 0.4);
+	    //crossover = new MicroservicesCrossover(2, 2, random, 0.4, 0.4);
+	    crossover = new MicroservicesCrossover(2, 2, random, crossoverProbability, crossoverFraction);
 	    NSGAIII<MicroservicesSolution> nsgaIII =
 	            new NSGAIIIBuilder<>(problem)
 	                .setCrossoverOperator(crossover)
