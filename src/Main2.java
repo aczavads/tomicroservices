@@ -52,9 +52,9 @@ public class Main2 {
 		PseudoRandomGenerator random = new JavaRandomGenerator();
 		NSGAIIIRunner runner = new NSGAIIIRunner();
 		File file = new File("/home/result");
-		runner.execute(graph, metrics, 
-				numberOfMicroservices,
-				random, file);
+//		runner.execute(graph, metrics, 
+//				numberOfMicroservices,
+//				random, file);
 	}
 	
 }

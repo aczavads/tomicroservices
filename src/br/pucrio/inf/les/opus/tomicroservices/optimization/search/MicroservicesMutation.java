@@ -47,6 +47,7 @@ public class MicroservicesMutation implements MutationOperator<MicroservicesSolu
 		Vertex vertexFromMs2 = microservice2.getMutableVerticies().get(randomGenerator.nextInt(0, limit));
 		microservice1.removeAndAddVerticies(vertexFromMs1, vertexFromMs2);
 		microservice2.removeAndAddVerticies(vertexFromMs2, vertexFromMs1);
+		System.out.println("mutated!");
 		return mutated;
 	}
 

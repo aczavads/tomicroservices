@@ -2,8 +2,9 @@
 <!DOCTYPE log SYSTEM "logger.dtd">
 <log>
 <record>
-  <date>2021-09-12T21:55:56</date>
-  <millis>1631494556230</millis>
+  <date>2022-02-22T02:37:13.372166264Z</date>
+  <millis>1645497433372</millis>
+  <nanos>166264</nanos>
   <sequence>0</sequence>
   <logger>org.uma.jmetal.util.JMetalLogger</logger>
   <level>INFO</level>
@@ -13,80 +14,87 @@
   <message>Loggers configured with null</message>
 </record>
 <record>
-  <date>2021-09-12T21:55:56</date>
-  <millis>1631494556278</millis>
+  <date>2022-02-22T02:37:13.426750467Z</date>
+  <millis>1645497433426</millis>
+  <nanos>750467</nanos>
   <sequence>1</sequence>
   <logger>org.uma.jmetal.util.JMetalLogger</logger>
   <level>INFO</level>
   <class>org.uma.jmetal.algorithm.multiobjective.nsgaiii.NSGAIII</class>
   <method>&lt;init&gt;</method>
   <thread>1</thread>
-  <message>rpssize: 91</message>
+  <message>rpssize: 1</message>
 </record>
 <record>
-  <date>2021-09-12T21:55:56</date>
-  <millis>1631494556717</millis>
+  <date>2022-02-22T02:37:14.683904294Z</date>
+  <millis>1645497434683</millis>
+  <nanos>904294</nanos>
   <sequence>2</sequence>
   <logger>org.uma.jmetal.util.JMetalLogger</logger>
   <level>INFO</level>
   <class>org.uma.jmetal.algorithm.multiobjective.nsgaiii.NSGAIII</class>
   <method>&lt;init&gt;</method>
   <thread>1</thread>
-  <message>rpssize: 91</message>
+  <message>rpssize: 1</message>
 </record>
 <record>
-  <date>2021-09-12T21:55:57</date>
-  <millis>1631494557034</millis>
+  <date>2022-02-22T02:37:15.585967655Z</date>
+  <millis>1645497435585</millis>
+  <nanos>967655</nanos>
   <sequence>3</sequence>
   <logger>org.uma.jmetal.util.JMetalLogger</logger>
   <level>INFO</level>
   <class>org.uma.jmetal.algorithm.multiobjective.nsgaiii.NSGAIII</class>
   <method>&lt;init&gt;</method>
   <thread>1</thread>
-  <message>rpssize: 91</message>
+  <message>rpssize: 1</message>
 </record>
 <record>
-  <date>2021-09-12T21:55:57</date>
-  <millis>1631494557288</millis>
+  <date>2022-02-22T02:37:16.487954370Z</date>
+  <millis>1645497436487</millis>
+  <nanos>954370</nanos>
   <sequence>4</sequence>
   <logger>org.uma.jmetal.util.JMetalLogger</logger>
   <level>INFO</level>
   <class>org.uma.jmetal.algorithm.multiobjective.nsgaiii.NSGAIII</class>
   <method>&lt;init&gt;</method>
   <thread>1</thread>
-  <message>rpssize: 91</message>
+  <message>rpssize: 1</message>
 </record>
 <record>
-  <date>2021-09-12T21:55:57</date>
-  <millis>1631494557573</millis>
+  <date>2022-02-22T02:37:17.364880281Z</date>
+  <millis>1645497437364</millis>
+  <nanos>880281</nanos>
   <sequence>5</sequence>
   <logger>org.uma.jmetal.util.JMetalLogger</logger>
   <level>INFO</level>
   <class>org.uma.jmetal.algorithm.multiobjective.nsgaiii.NSGAIII</class>
   <method>&lt;init&gt;</method>
   <thread>1</thread>
-  <message>rpssize: 91</message>
+  <message>rpssize: 1</message>
 </record>
 <record>
-  <date>2021-09-12T21:55:57</date>
-  <millis>1631494557827</millis>
+  <date>2022-02-22T02:37:18.342840284Z</date>
+  <millis>1645497438342</millis>
+  <nanos>840284</nanos>
   <sequence>6</sequence>
   <logger>org.uma.jmetal.util.JMetalLogger</logger>
   <level>INFO</level>
   <class>org.uma.jmetal.algorithm.multiobjective.nsgaiii.NSGAIII</class>
   <method>&lt;init&gt;</method>
   <thread>1</thread>
-  <message>rpssize: 91</message>
+  <message>rpssize: 1</message>
 </record>
 <record>
-  <date>2021-09-12T21:55:58</date>
-  <millis>1631494558095</millis>
+  <date>2022-02-22T02:37:19.203755884Z</date>
+  <millis>1645497439203</millis>
+  <nanos>755884</nanos>
   <sequence>7</sequence>
   <logger>org.uma.jmetal.util.JMetalLogger</logger>
   <level>INFO</level>
   <class>org.uma.jmetal.algorithm.multiobjective.nsgaiii.NSGAIII</class>
   <method>&lt;init&gt;</method>
   <thread>1</thread>
-  <message>rpssize: 91</message>
+  <message>rpssize: 1</message>
 </record>
 </log>

@@ -108,7 +108,7 @@ public class NSGAIIIRunner extends AbstractAlgorithmRunner {
 	                .setSelectionOperator(selection)
 	                .setMaxIterations(2_000)
 	                .build();
-	    nsgaIII.setMaxPopulationSize(5);
+	    nsgaIII.setMaxPopulationSize(40);
 	    algorithm = (Algorithm<List<MicroservicesSolution>>) nsgaIII;
 	    try {
 	    	long initTime = System.currentTimeMillis();

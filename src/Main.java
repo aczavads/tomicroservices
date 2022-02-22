@@ -16,6 +16,7 @@ import br.pucrio.inf.les.opus.tomicroservices.metrics.Minimize;
 import br.pucrio.inf.les.opus.tomicroservices.metrics.overhead.CohesionPerMicroserviceArchitecture;
 import br.pucrio.inf.les.opus.tomicroservices.metrics.overhead.CouplingPerMicroserviceArchitecture;
 import br.pucrio.inf.les.opus.tomicroservices.metrics.overhead.FunctionalityPerMicroserviceArchitecture;
+import br.pucrio.inf.les.opus.tomicroservices.metrics.overhead.FunctionalityPerMicroserviceArchitectureV2;
 import br.pucrio.inf.les.opus.tomicroservices.metrics.overhead.OverheadMaxPerMicroserviceArchitecture;
 import br.pucrio.inf.les.opus.tomicroservices.metrics.overhead.ReusePerMicroserviceArchitecture;
 import br.pucrio.inf.les.opus.tomicroservices.metrics.overhead.SizePerMicroserviceArchitecture;
@@ -61,7 +62,7 @@ public class Main {
 		System.out.println("Dynamic");
 		DynamicLogAnalyzer dynamic = new DynamicLogAnalyzer();
 		dynamic.analyze(logDynamicFile, graph, featuresGeneralFile);
-		System.out.println(graph.getVerticesSize());
+ 		System.out.println(graph.getVerticesSize());
 		System.out.println("NSGA-III");
 		
 	
@@ -71,16 +72,17 @@ public class Main {
 		
 		//REMOVE IT TO NSGA-II
 		//metrics.add(new OverheadMaxPerMicroserviceArchitecture());
-		metrics.add(new FunctionalityPerMicroserviceArchitecture(minimize));
+		//metrics.add(new FunctionalityPerMicroserviceArchitecture(minimize));
+		metrics.add(new FunctionalityPerMicroserviceArchitectureV2());
 		//metrics.add(new ReusePerMicroserviceArchitecture("start", 1, minimize));
 		
-		metrics.add(new CouplingPerMicroserviceArchitecture());
-		metrics.add(new CohesionPerMicroserviceArchitecture(minimize));
+		//metrics.add(new CouplingPerMicroserviceArchitecture());
+		//metrics.add(new CohesionPerMicroserviceArchitecture(minimize));
 		//metrics.add(new SizePerMicroserviceArchitecture());
 		//int numberOfMicroservices = 13;
-		int numberOfMicroservices = 2;
-		double crossoverProbability = 0.4; 
-		double crossoverFraction = 0.4;
+		int numberOfMicroservices = 3;
+		double crossoverProbability = 0.5; 
+		double crossoverFraction = 0.5;
 		PseudoRandomGenerator random = new JavaRandomGenerator();
 		
 		NSGAIIIRunner runner = new NSGAIIIRunner();
