@@ -73,7 +73,7 @@ public class Main {
 		//REMOVE IT TO NSGA-II
 		//metrics.add(new OverheadMaxPerMicroserviceArchitecture());
 		//metrics.add(new FunctionalityPerMicroserviceArchitecture(minimize));
-		metrics.add(new FunctionalityPerMicroserviceArchitectureV2());
+	    metrics.add(new FunctionalityPerMicroserviceArchitectureV2(minimize));
 		//metrics.add(new ReusePerMicroserviceArchitecture("start", 1, minimize));
 		
 		//metrics.add(new CouplingPerMicroserviceArchitecture());

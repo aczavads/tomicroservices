@@ -2,9 +2,9 @@
 <!DOCTYPE log SYSTEM "logger.dtd">
 <log>
 <record>
-  <date>2022-02-22T02:37:13.372166264Z</date>
-  <millis>1645497433372</millis>
-  <nanos>166264</nanos>
+  <date>2022-02-23T01:47:05.313235138Z</date>
+  <millis>1645580825313</millis>
+  <nanos>235138</nanos>
   <sequence>0</sequence>
   <logger>org.uma.jmetal.util.JMetalLogger</logger>
   <level>INFO</level>
@@ -14,9 +14,9 @@
   <message>Loggers configured with null</message>
 </record>
 <record>
-  <date>2022-02-22T02:37:13.426750467Z</date>
-  <millis>1645497433426</millis>
-  <nanos>750467</nanos>
+  <date>2022-02-23T01:47:05.371449751Z</date>
+  <millis>1645580825371</millis>
+  <nanos>449751</nanos>
   <sequence>1</sequence>
   <logger>org.uma.jmetal.util.JMetalLogger</logger>
   <level>INFO</level>
@@ -26,9 +26,9 @@
   <message>rpssize: 1</message>
 </record>
 <record>
-  <date>2022-02-22T02:37:14.683904294Z</date>
-  <millis>1645497434683</millis>
-  <nanos>904294</nanos>
+  <date>2022-02-23T01:47:06.997568835Z</date>
+  <millis>1645580826997</millis>
+  <nanos>568835</nanos>
   <sequence>2</sequence>
   <logger>org.uma.jmetal.util.JMetalLogger</logger>
   <level>INFO</level>
@@ -38,9 +38,9 @@
   <message>rpssize: 1</message>
 </record>
 <record>
-  <date>2022-02-22T02:37:15.585967655Z</date>
-  <millis>1645497435585</millis>
-  <nanos>967655</nanos>
+  <date>2022-02-23T01:47:08.389600433Z</date>
+  <millis>1645580828389</millis>
+  <nanos>600433</nanos>
   <sequence>3</sequence>
   <logger>org.uma.jmetal.util.JMetalLogger</logger>
   <level>INFO</level>
@@ -50,9 +50,9 @@
   <message>rpssize: 1</message>
 </record>
 <record>
-  <date>2022-02-22T02:37:16.487954370Z</date>
-  <millis>1645497436487</millis>
-  <nanos>954370</nanos>
+  <date>2022-02-23T01:47:09.654392872Z</date>
+  <millis>1645580829654</millis>
+  <nanos>392872</nanos>
   <sequence>4</sequence>
   <logger>org.uma.jmetal.util.JMetalLogger</logger>
   <level>INFO</level>
@@ -62,9 +62,9 @@
   <message>rpssize: 1</message>
 </record>
 <record>
-  <date>2022-02-22T02:37:17.364880281Z</date>
-  <millis>1645497437364</millis>
-  <nanos>880281</nanos>
+  <date>2022-02-23T01:47:10.945529782Z</date>
+  <millis>1645580830945</millis>
+  <nanos>529782</nanos>
   <sequence>5</sequence>
   <logger>org.uma.jmetal.util.JMetalLogger</logger>
   <level>INFO</level>
@@ -74,9 +74,9 @@
   <message>rpssize: 1</message>
 </record>
 <record>
-  <date>2022-02-22T02:37:18.342840284Z</date>
-  <millis>1645497438342</millis>
-  <nanos>840284</nanos>
+  <date>2022-02-23T01:47:12.213879019Z</date>
+  <millis>1645580832213</millis>
+  <nanos>879019</nanos>
   <sequence>6</sequence>
   <logger>org.uma.jmetal.util.JMetalLogger</logger>
   <level>INFO</level>
@@ -86,9 +86,9 @@
   <message>rpssize: 1</message>
 </record>
 <record>
-  <date>2022-02-22T02:37:19.203755884Z</date>
-  <millis>1645497439203</millis>
-  <nanos>755884</nanos>
+  <date>2022-02-23T01:47:13.543455209Z</date>
+  <millis>1645580833543</millis>
+  <nanos>455209</nanos>
   <sequence>7</sequence>
   <logger>org.uma.jmetal.util.JMetalLogger</logger>
   <level>INFO</level>

@@ -2,6 +2,7 @@ package br.pucrio.inf.les.opus.tomicroservices.metrics.overhead;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collector;
@@ -44,20 +45,22 @@ public class FunctionalityPerMicroserviceArchitectureV2 implements MetricPerMicr
 		List funcionalidades = new ArrayList<>(microservicesSolution.getMicroservices().stream().flatMap(m -> m.getVerticies().stream().map(v -> v.getFuncitionalities())).collect(Collectors.toSet()));
 
 		for (int m = 0; m < microservicesSolution.getMicroservices().size(); m++) {
-			
+			//FunctionalityPerMicroservice metric = new FunctionalityPerMicroservice();
+			MetricPerMicroservice metric = new NullMetric();
+			microservicesSolution.getMicroservices().get(m).addOrUpdateMetric(metric); //TODO - verificar desempenho!
+
 			for (Vertex v: microservicesSolution.getMicroservices().get(m).getVerticies()) {
 				for (String f : v.getFuncitionalities()) {
 		    		distribuiçãoFuncionalidadesPorMS[funcionalidades.indexOf(v.getFuncitionalities())][m]++;
 				}
 			}			
 		}
-
-
 		
     	result = calcularAptidãoPelaDistribuiçãoDeFuncionalidades(linhas, colunas, distribuiçãoFuncionalidadesPorMS);
     	result -= descontarAptidãoPorMicroserviçosSemFuncionalidades(linhas, colunas, distribuiçãoFuncionalidadesPorMS, quantidadeDeMétodos, colunas);
-		System.out.println("==>"+ result);
-		return result;
+		System.out.println(microservicesSolution.hashCode() +  "==>"+ result + ", convert(result) ==>  " + convert(result));
+//    	System.out.println(microservicesSolution.toString());
+		return convert(result);
 	}
 
 	private int descontarAptidãoPorMicroserviçosSemFuncionalidades(int linhas, int colunas,
