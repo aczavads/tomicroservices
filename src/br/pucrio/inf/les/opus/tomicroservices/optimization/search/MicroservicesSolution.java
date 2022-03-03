@@ -8,6 +8,9 @@ import java.util.Set;
 
 import org.uma.jmetal.solution.DoubleSolution;
 
+import br.pucrio.inf.les.opus.tomicroservices.graph.Edge;
+import br.pucrio.inf.les.opus.tomicroservices.graph.Vertex;
+
 public class MicroservicesSolution implements DoubleSolution {
 	
 	private List<Microservice> microservices;
@@ -167,12 +170,43 @@ public class MicroservicesSolution implements DoubleSolution {
 		int count = 0;
 		for (Microservice m : this.microservices) {
 			result += "microservice" + count + "\n";
-			result += m.print() + "\n";
+			//result += m.print() + "\n";
+			result += printMicroservice(m) + "\n";
 			++count;
 		}
 		return result;
 	}
 	
+	private String printMicroservice(Microservice m) {
+		String result = "";
+		for (Vertex vertex : m.getVerticies()) {
+			String name = vertex.getName();
+			List<String> funcs = vertex.getFuncitionalities();
+			result += name + "!";
+			for (String fun : funcs) {
+				result += fun + " ";
+			}
+			result += "! \n";		
+			
+			for (Edge e : vertex.getOutbound().values()) {
+				if (!m.getVerticies().contains(e.getTarget())) {
+					result += "==> " + printMicroserviceNameOfVertex(e.getTarget()) + " "+e.getTarget().getName() + "\n";					
+				}
+			}
+						
+		}
+		return result;
+	}
+	
+	private String printMicroserviceNameOfVertex(Vertex vertex) {
+		for (Microservice m : this.microservices) {
+			if (m.getVerticies().contains(vertex)) {
+				return "[ microservice" + this.microservices.indexOf(m) + "]";
+			}
+		}
+		return "[" + "not found" + "]";
+	}
+
 	public String toString() {
 		String result = "";
 		int count = 0;

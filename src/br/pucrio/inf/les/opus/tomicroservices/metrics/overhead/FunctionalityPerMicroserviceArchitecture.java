@@ -41,8 +41,8 @@ public class FunctionalityPerMicroserviceArchitecture implements MetricPerMicros
 		double msa = lMicroservices.size();
 		double fmsa = functionalitiesPerMicroservice.size();
 		result = result + (fmsa/msa);
-		System.out.println(microservicesSolution.toString());
-		System.out.println(result);
+		//System.out.println(microservicesSolution.toString());
+		//System.out.println(result);
 		return convert(result);
 	}
 	

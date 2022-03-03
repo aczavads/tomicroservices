@@ -35,19 +35,19 @@ public class MicroservicesMutation implements MutationOperator<MicroservicesSolu
 		Microservice microservice2 = microservices.get(index2);
 		limit = microservice1.getMutableVerticies().size() - 1;
 		if (limit < 1) {
-			System.out.println("Not mutated");
+			//System.out.println("Not mutated");
 			return mutated;
 		}
 		Vertex vertexFromMs1 = microservice1.getMutableVerticies().get(randomGenerator.nextInt(0, limit));
 		limit = microservice2.getMutableVerticies().size() - 1;
 		if (limit < 1) {
-			System.out.println("Not mutated");
+			//System.out.println("Not mutated");
 			return mutated;
 		}
 		Vertex vertexFromMs2 = microservice2.getMutableVerticies().get(randomGenerator.nextInt(0, limit));
 		microservice1.removeAndAddVerticies(vertexFromMs1, vertexFromMs2);
 		microservice2.removeAndAddVerticies(vertexFromMs2, vertexFromMs1);
-		System.out.println("mutated!");
+		//System.out.println("mutated!");
 		return mutated;
 	}
 

@@ -108,7 +108,7 @@ public class NSGAIIIRunner extends AbstractAlgorithmRunner {
 	                .setSelectionOperator(selection)
 	                .setMaxIterations(2_000)
 	                .build();
-	    nsgaIII.setMaxPopulationSize(40);
+	    nsgaIII.setMaxPopulationSize(100);
 	    algorithm = (Algorithm<List<MicroservicesSolution>>) nsgaIII;
 	    try {
 	    	long initTime = System.currentTimeMillis();
@@ -116,7 +116,7 @@ public class NSGAIIIRunner extends AbstractAlgorithmRunner {
 	    	long time = System.currentTimeMillis() - initTime;
 		    System.out.println("Finished");
 		    List<MicroservicesSolution> population = algorithm.getResult();
-		    System.out.println("Ranking");
+		    System.out.println("Ranking==>" + population.size());
 		    Map<String, MicroservicesSolution> solutions = ranking(population, metrics);
 		    System.out.println("Save Solution");
 		    String result = print(solutions, metrics);

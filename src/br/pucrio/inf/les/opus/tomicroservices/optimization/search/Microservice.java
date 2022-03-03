@@ -8,8 +8,10 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import br.pucrio.inf.les.opus.tomicroservices.graph.Vertex;
+import br.pucrio.inf.les.opus.tomicroservices.graph.Edge;
 import br.pucrio.inf.les.opus.tomicroservices.metrics.HasMetric;
 import br.pucrio.inf.les.opus.tomicroservices.metrics.MetricPerMicroservice;
+
 
 public class Microservice implements HasMetric<MetricPerMicroservice> {
 	
@@ -131,7 +133,7 @@ public class Microservice implements HasMetric<MetricPerMicroservice> {
 			for (String fun : funcs) {
 				result += fun + " ";
 			}
-			result += "! \n";
+			result += "! \n";			
 		}
 		return result;
 	}

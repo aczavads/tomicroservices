@@ -71,9 +71,9 @@ public class Main {
 		ConvertValue minimize = new Minimize();
 		
 		//REMOVE IT TO NSGA-II
-		//metrics.add(new OverheadMaxPerMicroserviceArchitecture());
-		//metrics.add(new FunctionalityPerMicroserviceArchitecture(minimize));
-	    metrics.add(new FunctionalityPerMicroserviceArchitectureV2(minimize));
+		metrics.add(new OverheadMaxPerMicroserviceArchitecture());
+		metrics.add(new FunctionalityPerMicroserviceArchitecture(minimize));
+		//metrics.add(new FunctionalityPerMicroserviceArchitectureV2(minimize));
 		//metrics.add(new ReusePerMicroserviceArchitecture("start", 1, minimize));
 		
 		//metrics.add(new CouplingPerMicroserviceArchitecture());
@@ -95,7 +95,7 @@ public class Main {
 		//otherMetrics.add(new ReusePerMicroserviceArchitecture("start", 1, minimize));
 
 		metrics.addAll(otherMetrics);
-		final int executions = 7;
+		final int executions = 1;
 		for (int i = 0; i < executions; ++i) {
 			File file = new File("/home/arthur/Documents/doutorado/tomsc/result" + i);
 			
