@@ -2,6 +2,9 @@ package br.pucrio.inf.les.opus.tomicroservices.optimization.algorithm.nsgaIII.to
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +12,7 @@ import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
 import org.uma.jmetal.algorithm.Algorithm;
+import org.uma.jmetal.algorithm.impl.AbstractGeneticAlgorithm;
 import org.uma.jmetal.algorithm.multiobjective.nsgaiii.NSGAIII;
 import org.uma.jmetal.algorithm.multiobjective.nsgaiii.NSGAIIIBuilder;
 import org.uma.jmetal.operator.CrossoverOperator;
@@ -106,9 +110,15 @@ public class NSGAIIIRunner extends AbstractAlgorithmRunner {
 	                .setCrossoverOperator(crossover)
 	                .setMutationOperator(mutation)
 	                .setSelectionOperator(selection)
-	                .setMaxIterations(2_000)
+	                .setMaxIterations(5)
 	                .build();
-	    nsgaIII.setMaxPopulationSize(100);
+	    nsgaIII.setMaxPopulationSize(20);
+//	    nsgaIII = (NSGAIII<MicroservicesSolution>) Proxy.newProxyInstance(NSGAIIIRunner.class.getClassLoader(), new Class[] {AbstractGeneticAlgorithm.class}, new InvocationHandler() {			
+//			@Override
+//			public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+//				return method.invoke(proxy, args);
+//			}
+//		});
 	    algorithm = (Algorithm<List<MicroservicesSolution>>) nsgaIII;
 	    try {
 	    	long initTime = System.currentTimeMillis();
