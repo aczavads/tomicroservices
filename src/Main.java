@@ -42,7 +42,7 @@ public class Main {
 		String acceptList = "/home/arthur/Documents/doutorado/tomsc/accept.list";
 		String rejectList = "/home/arthur/Documents/doutorado/tomsc/reject.list";
 		String dependency = "/home/arthur/Documents/doutorado/tomsc/csbaseDependency";
-		String logDynamic = "/home/arthur/Documents/doutorado/tomsc/log";
+		String logDynamic = "/tmp/to-microservices-log.txt";
 		String featuresGeneral = "/home/arthur/Documents/doutorado/tomsc/feature";
 
 		
@@ -71,8 +71,8 @@ public class Main {
 		ConvertValue minimize = new Minimize();
 		
 		//REMOVE IT TO NSGA-II
-		metrics.add(new OverheadMaxPerMicroserviceArchitecture());
-		metrics.add(new FunctionalityPerMicroserviceArchitecture(minimize));
+		//metrics.add(new OverheadMaxPerMicroserviceArchitecture());
+		//metrics.add(new FunctionalityPerMicroserviceArchitecture(minimize));
 		//metrics.add(new FunctionalityPerMicroserviceArchitectureV2(minimize));
 		//metrics.add(new ReusePerMicroserviceArchitecture("start", 1, minimize));
 		
@@ -81,8 +81,8 @@ public class Main {
 		//metrics.add(new SizePerMicroserviceArchitecture());
 		//int numberOfMicroservices = 13;
 		int numberOfMicroservices = 3;
-		double crossoverProbability = 0.5; 
-		double crossoverFraction = 0.5;
+		double crossoverProbability = 0.7; 
+		double crossoverFraction = 0.1;
 		PseudoRandomGenerator random = new JavaRandomGenerator();
 		
 		NSGAIIIRunner runner = new NSGAIIIRunner();
@@ -91,13 +91,13 @@ public class Main {
 		//	= new br.pucrio.inf.les.opus.tomicroservices.optimization.NSGAIIRunner();
 		List<MetricPerMicroserviceArchitecture> otherMetrics = new ArrayList<MetricPerMicroserviceArchitecture>();
 		//otherMetrics.add(new OverheadMaxPerMicroserviceArchitecture());
-		//otherMetrics.add(new FunctionalityPerMicroserviceArchitecture(minimize));
+		otherMetrics.add(new FunctionalityPerMicroserviceArchitecture(minimize));
 		//otherMetrics.add(new ReusePerMicroserviceArchitecture("start", 1, minimize));
 
 		metrics.addAll(otherMetrics);
-		final int executions = 1;
+		final int executions = 5000;
 		for (int i = 0; i < executions; ++i) {
-			File file = new File("/home/arthur/Documents/doutorado/tomsc/result" + i);
+			File file = new File("/tmp/results/result-" + i);
 			
 			runner._execute(graph, metrics, 
 					numberOfMicroservices,

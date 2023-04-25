@@ -28,7 +28,7 @@ public class ClassNamePattern {
 	private List<String> regex;
 	
 	private boolean accept;
-	
+	Executa
 	public ClassNamePattern(File file, boolean accept) {
 		this.accept = accept;
 		this.file = file;
@@ -89,6 +89,4 @@ public class ClassNamePattern {
 	
 	public void setAccept(boolean accept) {
 		this.accept = accept;
-	}
-	
-}
+	}Executa}

@@ -178,7 +178,7 @@ public class DynamicLogAnalyzer {
 		}
 	}
 	
-	public void analyze(File log, Graph graph, File generalFunctionalities) {
+	public void analyze_OLD(File log, Graph graph, File generalFunctionalities) {
 		this.enableFunctionatiles = new DeepToFunctionalities();
 		extractGeneralFunctionalities(generalFunctionalities);
 		try (BufferedReader reader = new BufferedReader(
