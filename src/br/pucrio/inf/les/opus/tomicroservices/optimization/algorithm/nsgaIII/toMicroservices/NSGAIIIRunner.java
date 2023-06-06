@@ -110,9 +110,10 @@ public class NSGAIIIRunner extends AbstractAlgorithmRunner {
 	                .setCrossoverOperator(crossover)
 	                .setMutationOperator(mutation)
 	                .setSelectionOperator(selection)
-	                .setMaxIterations(5)
+	                .setMaxIterations(100000) //10000
+	                .setPopulationSize(100)  //100
 	                .build();
-	    nsgaIII.setMaxPopulationSize(20);
+	    //nsgaIII.setMaxPopulationSize(20);
 //	    nsgaIII = (NSGAIII<MicroservicesSolution>) Proxy.newProxyInstance(NSGAIIIRunner.class.getClassLoader(), new Class[] {AbstractGeneticAlgorithm.class}, new InvocationHandler() {			
 //			@Override
 //			public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {

@@ -42,7 +42,8 @@ public class Main {
 		String acceptList = "/home/arthur/Documents/doutorado/tomsc/accept.list";
 		String rejectList = "/home/arthur/Documents/doutorado/tomsc/reject.list";
 		String dependency = "/home/arthur/Documents/doutorado/tomsc/csbaseDependency";
-		String logDynamic = "/tmp/to-microservices-log.txt";
+		//String logDynamic = "/home/arthur/Downloads/experimento-jpetstore-200-iterações/jpetstore.log";
+		String logDynamic = "/home/arthur/to-microservices-log.txt";
 		String featuresGeneral = "/home/arthur/Documents/doutorado/tomsc/feature";
 
 		
@@ -76,13 +77,13 @@ public class Main {
 		//metrics.add(new FunctionalityPerMicroserviceArchitectureV2(minimize));
 		//metrics.add(new ReusePerMicroserviceArchitecture("start", 1, minimize));
 		
-		//metrics.add(new CouplingPerMicroserviceArchitecture());
-		//metrics.add(new CohesionPerMicroserviceArchitecture(minimize));
+		metrics.add(new CouplingPerMicroserviceArchitecture());
+		metrics.add(new CohesionPerMicroserviceArchitecture(minimize));
 		//metrics.add(new SizePerMicroserviceArchitecture());
 		//int numberOfMicroservices = 13;
 		int numberOfMicroservices = 3;
-		double crossoverProbability = 0.7; 
-		double crossoverFraction = 0.1;
+		double crossoverProbability = 0.9; 
+		double crossoverFraction = 0.5;
 		PseudoRandomGenerator random = new JavaRandomGenerator();
 		
 		NSGAIIIRunner runner = new NSGAIIIRunner();
@@ -90,14 +91,14 @@ public class Main {
 		//br.pucrio.inf.les.opus.tomicroservices.optimization.NSGAIIRunner runner 
 		//	= new br.pucrio.inf.les.opus.tomicroservices.optimization.NSGAIIRunner();
 		List<MetricPerMicroserviceArchitecture> otherMetrics = new ArrayList<MetricPerMicroserviceArchitecture>();
-		//otherMetrics.add(new OverheadMaxPerMicroserviceArchitecture());
+		otherMetrics.add(new OverheadMaxPerMicroserviceArchitecture());
 		otherMetrics.add(new FunctionalityPerMicroserviceArchitecture(minimize));
-		//otherMetrics.add(new ReusePerMicroserviceArchitecture("start", 1, minimize));
+		otherMetrics.add(new ReusePerMicroserviceArchitecture("start", 1, minimize));
 
 		metrics.addAll(otherMetrics);
-		final int executions = 5000;
+		final int executions = 30;
 		for (int i = 0; i < executions; ++i) {
-			File file = new File("/tmp/results/result-" + i);
+			File file = new File("/home/arthur/results/result-" + i);
 			
 			runner._execute(graph, metrics, 
 					numberOfMicroservices,

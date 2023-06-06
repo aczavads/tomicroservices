@@ -78,27 +78,28 @@ public class MicroservicesProblem extends AbstractGenericProblem<MicroservicesSo
 		}
 		//final double thresholdHigh = 0.16;
 		//final double thresholdHigh = 0.24;
-		final double thresholdHigh = 1.00;
+		final double thresholdHigh = 0.4;
 		//final double thresholdHigh = 0.32;
-		final double thresholdLow = 0.04;
+		final double thresholdLow = 0.1;
 		//final double thresholdLow = 0.06;
 		for (int i = 0; i < count; ++i) {
 			double reason = ((double)sizes[i]) / ((double)totalSize);
 			if (reason > thresholdHigh || reason < thresholdLow) {
-				System.out.println(++killed);
-				System.out.println("killed");
+				++killed;
+//				System.out.println(++killed);
+//				System.out.println("killed");
 				return true;
 			}
 		}
-		System.out.println("Not killed");
+//		System.out.println("Not killed");
 		return false;
 	}
 	
 	@Override
 	public void evaluate(MicroservicesSolution solution) {
 		//System.out.println("Evaluate");
-		//boolean killed = isKilled(solution);
-		boolean killed = false;
+		boolean killed = isKilled(solution);
+		//boolean killed = false;
 		Set<String> keys = this.metrics.keySet();
 		int index;
 		for (String key : keys) {
