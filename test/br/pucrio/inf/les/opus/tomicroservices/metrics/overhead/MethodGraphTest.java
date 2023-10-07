@@ -6,6 +6,10 @@ import org.jgrapht.Graph;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import br.pucrio.inf.les.opus.tomicroservices.metrics.MethodEdgeValue;
+import br.pucrio.inf.les.opus.tomicroservices.metrics.MethodGraph;
+import br.pucrio.inf.les.opus.tomicroservices.metrics.MethodNode;
+
 class MethodGraphTest {
 
 	private MethodGraph methodGraph;
