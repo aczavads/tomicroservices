@@ -51,12 +51,14 @@ public class ReusePerMicroserviceArchitecture implements MetricPerMicroserviceAr
 
 	@Override
 	public double printableValue(MicroservicesSolution microservicesSolution) {
-		return this.convertValue.convert(getValue(microservicesSolution));
+		//return this.convertValue.convert(getValue(microservicesSolution));
+		return getValue(microservicesSolution);
 	}
 
 	@Override
 	public double printableValue(double value) {
-		return this.convertValue.convert(value);
+		//return this.convertValue.convert(value);
+		return value;
 	}
 
 	@Override

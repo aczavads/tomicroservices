@@ -60,7 +60,8 @@ public class FunctionalityPerMicroserviceArchitecture implements MetricPerMicros
 
 	@Override
 	public double printableValue(double value) {
-		return convert(value);
+		//return convert(value);
+		return value;
 	}
 
 	@Override

@@ -1,6 +1,7 @@
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.uma.jmetal.runner.multiobjective.NSGAIIRunner;
 import org.uma.jmetal.util.pseudorandom.PseudoRandomGenerator;
@@ -15,6 +16,7 @@ import br.pucrio.inf.les.opus.tomicroservices.metrics.MetricPerMicroserviceArchi
 import br.pucrio.inf.les.opus.tomicroservices.metrics.Minimize;
 import br.pucrio.inf.les.opus.tomicroservices.metrics.overhead.CohesionPerMicroserviceArchitecture;
 import br.pucrio.inf.les.opus.tomicroservices.metrics.overhead.CouplingPerMicroserviceArchitecture;
+import br.pucrio.inf.les.opus.tomicroservices.metrics.overhead.FakeMetric;
 import br.pucrio.inf.les.opus.tomicroservices.metrics.overhead.FunctionalityPerMicroserviceArchitecture;
 import br.pucrio.inf.les.opus.tomicroservices.metrics.overhead.FunctionalityPerMicroserviceArchitectureV2;
 import br.pucrio.inf.les.opus.tomicroservices.metrics.overhead.OverheadMaxPerMicroserviceArchitecture;
@@ -43,7 +45,8 @@ public class Main {
 		String rejectList = "/home/arthur/Documents/doutorado/tomsc/reject.list";
 		String dependency = "/home/arthur/Documents/doutorado/tomsc/csbaseDependency";
 		//String logDynamic = "/home/arthur/Downloads/experimento-jpetstore-200-iterações/jpetstore.log";
-		String logDynamic = "/home/arthur/to-microservices-log.txt";
+		String logDynamic = "/home/arthur/to-microservices-log-definitivo-ORIGINAL-protocolo-alvara-cadeco.txt";
+		//String logDynamic = "/home/arthur/Documents/doutorado/tomsc/log";
 		String featuresGeneral = "/home/arthur/Documents/doutorado/tomsc/feature";
 
 		
@@ -78,10 +81,10 @@ public class Main {
 		//metrics.add(new ReusePerMicroserviceArchitecture("start", 1, minimize));
 		
 		metrics.add(new CouplingPerMicroserviceArchitecture());
+		//metrics.add(new FakeMetric());
 		metrics.add(new CohesionPerMicroserviceArchitecture(minimize));
 		//metrics.add(new SizePerMicroserviceArchitecture());
-		//int numberOfMicroservices = 13;
-		int numberOfMicroservices = 3;
+		int numberOfMicroservices = 5;
 		double crossoverProbability = 0.9; 
 		double crossoverFraction = 0.5;
 		PseudoRandomGenerator random = new JavaRandomGenerator();
@@ -96,9 +99,9 @@ public class Main {
 		otherMetrics.add(new ReusePerMicroserviceArchitecture("start", 1, minimize));
 
 		metrics.addAll(otherMetrics);
-		final int executions = 30;
+		final int executions = 10;
 		for (int i = 0; i < executions; ++i) {
-			File file = new File("/home/arthur/results/result-" + i);
+			File file = new File("/home/arthur/results/result-" + (UUID.randomUUID().toString()));
 			
 			runner._execute(graph, metrics, 
 					numberOfMicroservices,

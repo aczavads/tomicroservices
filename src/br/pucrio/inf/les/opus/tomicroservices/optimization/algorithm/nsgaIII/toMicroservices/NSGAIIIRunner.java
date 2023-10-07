@@ -1,18 +1,16 @@
 package br.pucrio.inf.les.opus.tomicroservices.optimization.algorithm.nsgaIII.toMicroservices;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
+import java.io.FileOutputStream;
+import java.io.PrintWriter;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.io.FileUtils;
 import org.uma.jmetal.algorithm.Algorithm;
-import org.uma.jmetal.algorithm.impl.AbstractGeneticAlgorithm;
 import org.uma.jmetal.algorithm.multiobjective.nsgaiii.NSGAIII;
 import org.uma.jmetal.algorithm.multiobjective.nsgaiii.NSGAIIIBuilder;
 import org.uma.jmetal.operator.CrossoverOperator;
@@ -20,8 +18,11 @@ import org.uma.jmetal.operator.MutationOperator;
 import org.uma.jmetal.operator.SelectionOperator;
 import org.uma.jmetal.operator.impl.selection.TournamentSelection;
 import org.uma.jmetal.problem.Problem;
+import org.uma.jmetal.qualityIndicator.CommandLineIndicatorRunner;
 import org.uma.jmetal.util.AbstractAlgorithmRunner;
 import org.uma.jmetal.util.AlgorithmRunner;
+import org.uma.jmetal.util.fileoutput.SolutionListOutput;
+import org.uma.jmetal.util.fileoutput.impl.DefaultFileOutputContext;
 import org.uma.jmetal.util.pseudorandom.PseudoRandomGenerator;
 
 import br.pucrio.inf.les.opus.tomicroservices.graph.Graph;
@@ -93,6 +94,7 @@ public class NSGAIIIRunner extends AbstractAlgorithmRunner {
 			double crossoverFraction,
 			PseudoRandomGenerator random,
 			File file) {
+		System.out.println("Started. " + (new Date().toLocaleString()));
 		Problem<MicroservicesSolution> problem;
 	    Algorithm<List<MicroservicesSolution>> algorithm;
 	    MutationOperator<MicroservicesSolution> mutation;
@@ -110,10 +112,10 @@ public class NSGAIIIRunner extends AbstractAlgorithmRunner {
 	                .setCrossoverOperator(crossover)
 	                .setMutationOperator(mutation)
 	                .setSelectionOperator(selection)
-	                .setMaxIterations(100000) //10000
+	                .setMaxIterations(1000) //10000
 	                .setPopulationSize(100)  //100
 	                .build();
-	    //nsgaIII.setMaxPopulationSize(20);
+	    nsgaIII.setMaxPopulationSize(100);
 //	    nsgaIII = (NSGAIII<MicroservicesSolution>) Proxy.newProxyInstance(NSGAIIIRunner.class.getClassLoader(), new Class[] {AbstractGeneticAlgorithm.class}, new InvocationHandler() {			
 //			@Override
 //			public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
@@ -129,25 +131,28 @@ public class NSGAIIIRunner extends AbstractAlgorithmRunner {
 		    List<MicroservicesSolution> population = algorithm.getResult();
 		    System.out.println("Ranking==>" + population.size());
 		    Map<String, MicroservicesSolution> solutions = ranking(population, metrics);
-		    System.out.println("Save Solution");
-		    String result = print(solutions, metrics);
+		    System.out.println("Save Solution " + (new Date().toLocaleString()));
+		    PrintWriter toFile = new PrintWriter(new BufferedOutputStream(new FileOutputStream(file)));
+		    printToFile(toFile, solutions, metrics);
 		    //System.out.println(result);
 		    try {
+		    	
+			    new SolutionListOutput(population)
+		    	.setVarFileOutputContext(new DefaultFileOutputContext(file.getAbsolutePath() + "_var.csv"))
+		    	.setFunFileOutputContext(new DefaultFileOutputContext(file.getAbsolutePath() + "_fun.csv"))
+		    	.print();
+		    	
 		    	System.out.println(file);
-				FileUtils.write(file, result, "UTF-8", false);
-				
-				FileUtils.write(file, "\n-------Best Of each fitness-------\n", "UTF-8", true);
-				
-				FileUtils.write(file, printFront(population, metrics), "UTF-8", true);
-				
-				String timeResult = "\nTIME: " + time;
-				FileUtils.write(file, timeResult, "UTF-8", true);
-			} catch (IOException e) {
+				toFile.print("\n-------Best Of each fitness-------\n");
+				printFrontToFile(toFile, population, metrics);
+				toFile.print("\nTIME: " + time);
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 	    } catch (Throwable e) {
-	    	System.out.println(e.getStackTrace());
+	    	e.printStackTrace();
 	    }
+	    System.out.println("Solution saved!");
 	    /**
 	    int solutionCount = 1;
 	    System.out.println("Print Solution");
@@ -162,20 +167,45 @@ public class NSGAIIIRunner extends AbstractAlgorithmRunner {
 	    }
 	    **/
 	}
-	
-	public String printFront(List<MicroservicesSolution> population, 
+	public void printFrontToFile(PrintWriter toFile, List<MicroservicesSolution> population, 
 			List<MetricPerMicroserviceArchitecture> metrics) {
-		String result = "";
 		for (MicroservicesSolution solution : population) {
 			for (MetricPerMicroserviceArchitecture metric : metrics) {
 	    		int index = metric.getObjectiveIndex();
 	    		double value = metric.printableValue(solution.getObjective(index));
-	    		result += metric.getName() + " : " + value + "\n";
+	    		toFile.print(metric.getName() + " : " + value + "\n");
 	    	}
-	    	result += solution.print() + "\n";
+			toFile.print(solution.print());
+			toFile.print("\n");
 		}
-		return result;
 	}
+	
+//	public StringBuffer printFront(List<MicroservicesSolution> population, 
+//			List<MetricPerMicroserviceArchitecture> metrics) {
+//		StringBuffer result = new StringBuffer();
+//		for (MicroservicesSolution solution : population) {
+//			for (MetricPerMicroserviceArchitecture metric : metrics) {
+//	    		int index = metric.getObjectiveIndex();
+//	    		double value = metric.printableValue(solution.getObjective(index));
+//	    		result.append(metric.getName()).append(" : ").append(value).append("\n");
+//	    	}
+//	    	result.append(solution.print()).append("\n");
+//		}
+//		return result;
+//	}
+//	public String printFront(List<MicroservicesSolution> population, 
+//			List<MetricPerMicroserviceArchitecture> metrics) {
+//		String result = "";
+//		for (MicroservicesSolution solution : population) {
+//			for (MetricPerMicroserviceArchitecture metric : metrics) {
+//	    		int index = metric.getObjectiveIndex();
+//	    		double value = metric.printableValue(solution.getObjective(index));
+//	    		result += metric.getName() + " : " + value + "\n";
+//	    	}
+//	    	result += solution.print() + "\n";
+//		}
+//		return result;
+//	}
 	
 	public MicroservicesSolution getBestSolution(MicroservicesSolution solution1, 
 			MicroservicesSolution solution2,
@@ -231,12 +261,11 @@ public class NSGAIIIRunner extends AbstractAlgorithmRunner {
 	    return result;
 	}
 	
-	public String print(Map<String, MicroservicesSolution> solutions, 
+	public void printToFile(PrintWriter toFile, Map<String, MicroservicesSolution> solutions, 
 			List<MetricPerMicroserviceArchitecture> metrics) {
-		String result = "";
 		Set<String> keys = solutions.keySet();
 		for (String key : keys) {
-			result += "Best of " + key + "\n";
+			toFile.print("Best of " + key + "\n");
 			MicroservicesSolution solution = solutions.get(key);
 			if (solution == null) {
 				System.out.println("SOLUTION NULL");
@@ -245,10 +274,29 @@ public class NSGAIIIRunner extends AbstractAlgorithmRunner {
 	    	for (MetricPerMicroserviceArchitecture metric : metrics) {
 	    		int index = metric.getObjectiveIndex();
 	    		double value = metric.printableValue(solution.getObjective(index));
-	    		result += metric.getName() + " : " + value + "\n";
+	    		toFile.print(metric.getName() + " : " + value + "\n");
 	    	}
-	    	result += solution.print() + "\n";
+	    	toFile.print(solution.print() + "\n");
 		}
-		return result;
 	}	
+//	public String print(Map<String, MicroservicesSolution> solutions, 
+//			List<MetricPerMicroserviceArchitecture> metrics) {
+//		String result = "";
+//		Set<String> keys = solutions.keySet();
+//		for (String key : keys) {
+//			result += "Best of " + key + "\n";
+//			MicroservicesSolution solution = solutions.get(key);
+//			if (solution == null) {
+//				System.out.println("SOLUTION NULL");
+//				continue;
+//			}
+//	    	for (MetricPerMicroserviceArchitecture metric : metrics) {
+//	    		int index = metric.getObjectiveIndex();
+//	    		double value = metric.printableValue(solution.getObjective(index));
+//	    		result += metric.getName() + " : " + value + "\n";
+//	    	}
+//	    	result += solution.print() + "\n";
+//		}
+//		return result;
+//	}	
 }

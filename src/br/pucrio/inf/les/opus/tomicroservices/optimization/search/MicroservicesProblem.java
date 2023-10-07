@@ -78,9 +78,9 @@ public class MicroservicesProblem extends AbstractGenericProblem<MicroservicesSo
 		}
 		//final double thresholdHigh = 0.16;
 		//final double thresholdHigh = 0.24;
-		final double thresholdHigh = 0.4;
+		final double thresholdHigh = 0.3;
 		//final double thresholdHigh = 0.32;
-		final double thresholdLow = 0.1;
+		final double thresholdLow = 0.02;
 		//final double thresholdLow = 0.06;
 		for (int i = 0; i < count; ++i) {
 			double reason = ((double)sizes[i]) / ((double)totalSize);
